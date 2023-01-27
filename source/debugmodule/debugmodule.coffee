@@ -5,16 +5,18 @@ export modulesToDebug = {
 
     accountsettingsmodule: true
     authclientmodule: true
-    authenticationinterface: true
-    configmodule: true
+    # authenticationinterface: true
+    # configmodule: true
     contentmodule: true
-    messageboxmodule: true
-    qrdisplaymodule: true
-    qrreadermodule: true
-    secretmanagementinterface: true
-    settingsmodule: true
+    # messageboxmodule: true
+    observerclientmodule: true
+    observerclient: true
+    # observerinterface: true
+    # qrdisplaymodule: true
+    # qrreadermodule: true
+    # secretmanagementinterface: true
+    # settingsmodule: true
     # statemodule: true
-    validatabletimestampmodule: true
     
 }
 

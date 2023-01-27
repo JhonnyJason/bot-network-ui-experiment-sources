@@ -5,28 +5,37 @@ import { createLogFunctions } from "thingy-debug"
 #endregion
 
 ############################################################
-import { createClient } from "./authclientmodule.js"
+import { createClient as createAuthClient } from "./authclientmodule.js"
+import { createClient as createObserverClient } from "./observerclientmodule.js"
 import * as state from "./statemodule.js"
 import { info, error } from "./messageboxmodule.js"
 
 ############################################################
 masterClient = null
+observerClient = null
 
 ############################################################
 export initialize = ->
     log "initialize"
 
-    ## Master Functions
+    ## Authentications: Master Functions
     addClientButton.addEventListener("click", addClientButtonClicked)
     removeClientButton.addEventListener("click", removeClientButtonClicked)
     getClientsButton.addEventListener("click", getClientsButtonClicked)
+
+    ## Observer: Regular Operations
+    latestOrdersButton.addEventListener("click", latestOrdersButtonClicked)
+    latestTickersButton.addEventListener("click", latestTickersButtonClicked)
+    latestBalancesButton.addEventListener("click", latestBalancesButtonClicked)
+
 
     ## Client Setup
     secretKeyHex = state.get("secretKeyHex")
     serverURL = "https://localhost:6969"
     o = {serverURL, secretKeyHex}
     
-    masterClient = createClient(o)
+    masterClient = createAuthClient(o)
+    observerClient = createObserverClient(o)
     return
 
 ############################################################
@@ -74,3 +83,45 @@ getClientsButtonClicked = (evnt) ->
         log(m)
         error(m)
     return
+
+
+############################################################
+latestOrdersButtonClicked = (evnt) ->
+    log "latestOrdersButtonClicked"
+    try
+        reply = await observerClient.getLatestOrders("aave-euro")
+        displayRegularOperationsResponseContainer.textContent = JSON.stringify(reply, null, 4)
+        olog reply
+        info("getLatestOrders appearently successful!")
+    catch err 
+        m = "Error on trying to getLatestOrders: #{err.message}"
+        log(m)
+        error(m)
+    return
+
+latestTickersButtonClicked = (evnt) ->
+    log "latestTickersButtonClicked"
+    try
+        reply = await observerClient.getLatestTickers("aave-euro")
+        displayRegularOperationsResponseContainer.textContent = JSON.stringify(reply, null, 4)
+        olog reply
+        info("getLatestTickers appearently successful!")
+    catch err 
+        m = "Error on trying to getLatestTickers: #{err.message}"
+        log(m)
+        error(m)
+    return
+
+latestBalancesButtonClicked = (evnt) ->
+    log "latestBalancesButtonClicked"
+    try
+        reply = await observerClient.getLatestBalances("aave-euro")
+        displayRegularOperationsResponseContainer.textContent = JSON.stringify(reply, null, 4)
+        olog reply
+        info("getLatestBalances appearently successful!")
+    catch err 
+        m = "Error on trying to getLatestBalances: #{err.message}"
+        log(m)
+        error(m)
+    return
+

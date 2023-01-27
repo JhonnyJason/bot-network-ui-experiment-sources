@@ -13,7 +13,6 @@ import * as secretmanagersettingsmodule from "./secretmanagersettingsmodule.js"
 import * as settingsmodule from "./settingsmodule.js"
 import * as statemodule from "./statemodule.js"
 import * as utilsmodule from "./utilsmodule.js"
-import * as validatabletimestampmodule from "./validatabletimestampmodule.js"
 
 Modules = {
     accountsettingsmodule,
@@ -31,7 +30,6 @@ Modules = {
     settingsmodule,
     statemodule,
     utilsmodule,
-    validatabletimestampmodule,
 }
 
 export default Modules
