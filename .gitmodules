@@ -1,0 +1,36 @@
+[submodule "source/settingsmodule"]
+	path = source/settingsmodule
+	url = git@github.com:JhonnyJason/pwa-sources-intrusivesettingsmodule.git
+[submodule "source/statemodule"]
+	path = source/statemodule
+	url = git@github.com:JhonnyJason/pwa-sources-statemodule.git
+[submodule "source/secretmanagementinterface"]
+	path = source/secretmanagementinterface
+	url = git@github.com:JhonnyJason/secretmanagementinterface.git
+[submodule "source/qrreadermodule"]
+	path = source/qrreadermodule
+	url = git@github.com:JhonnyJason/pwa-sources-qrreadermodule.git
+[submodule "source/qrdisplaymodule"]
+	path = source/qrdisplaymodule
+	url = git@github.com:JhonnyJason/pwa-sources-qrdisplaymodule.git
+[submodule "source/messageboxmodule"]
+	path = source/messageboxmodule
+	url = git@github.com:JhonnyJason/pwa-sources-messageboxmodule.git
+[submodule "source/authenticationinterface"]
+	path = source/authenticationinterface
+	url = git@github.com:JhonnyJason/authenticationinterface.git
+[submodule "source/buttonstylemodule"]
+	path = source/buttonstylemodule
+	url = git@github.com:JhonnyJason/pwa-sources-buttonstylemodule.git
+[submodule "source/accountsettingsmodule"]
+	path = source/accountsettingsmodule
+	url = git@github.com:JhonnyJason/bot-network-ui-experiment-sources-accountsettingsmodule.git
+[submodule "source/authclientmodule"]
+	path = source/authclientmodule
+	url = git@github.com:JhonnyJason/thingy-sources-authclientmodule.git
+[submodule "source/preloadermodule"]
+	path = source/preloadermodule
+	url = git@github.com:JhonnyJason/pwa-sources-preloadermodule.git
+[submodule "source/observerinterface"]
+	path = source/observerinterface
+	url = git@github.com:JhonnyJason/observerinterface.git

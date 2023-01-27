@@ -6,16 +6,13 @@
 
 mkdir -p output/font
 mkdir -p output/img
-mkdir -p output/audio
-mkdir -p output/video
 
 ## app files
 cp sources/ressources/font/* output/font/
 cp sources/ressources/img/* output/img/
-cp sources/ressources/audio/* output/audio/
-cp sources/ressources/video/* output/video/
 
 cp sources/ressources/favicon/* output/
 cp sources/ressources/manifest/* output/
+cp sources/ressources/jsworker/* output/
 
 echo 0

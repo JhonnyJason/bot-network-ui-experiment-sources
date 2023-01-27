@@ -1,23 +1,38 @@
-configmodule = {name: "configmodule", uimodule: false}
+
 ############################################################
-#region printLogFunctions
-log = (arg) ->
-    if allModules.debugmodule.modulesToDebug["configmodule"]?  then console.log "[configmodule]: " + arg
-    return
-ostr = (obj) -> JSON.stringify(obj, null, 4)
-olog = (obj) -> log "\n" + ostr(obj)
-print = (arg) -> console.log(arg)
+#region debug
+import { createLogFunctions } from "thingy-debug"
+{log, olog} = createLogFunctions("configmodule")
 #endregion
 
 ########################################################
-configmodule.initialize = ->
-    log "configmodule.initialize"
+export initialize = ->
+    log "initialize"
     return    
 
-########################################################
-#region exposedProperties
-configmodule.prop = true
+############################################################
+# Secret Manager
+export secretManagerOptions = [
+    "https://secrets.dotv.ee",
+    "https://secrets-dev.dotv.ee",
+    "https://secrets.extensivlyon.coffee"
+]
+export defaultSecretManagerChoice = 0
 
-#endregion
+############################################################
+# Secret Manager
+export dataManagerOptions = [
+    "https://data.dotv.ee",
+    "https://data-dev.dotv.ee",
+    "https://data.extensivlyon.coffee"
+]
+export defaultDataManagerChoice = 1
 
-export default configmodule
+############################################################
+# StrunFun Backend
+export backendOptions = [
+    "https://kraken-observer.dotv.ee",
+    "https://kraken-observer.extensivlyon.coffee"
+    "https://localhost:6999"
+]
+export defaultBackendChoice = 2

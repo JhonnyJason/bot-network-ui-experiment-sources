@@ -1,0 +1,51 @@
+settings-foreground ?= white
+settings-background ?= black
+settings-borders ?= #444
+settings-markers ?= #888
+
+
+.settingspage-content
+    #secretmanager-options,
+    #secretmanager-input
+        width 100%
+        padding 7px
+        box-sizing: border-box
+        border none
+        overflow hidden
+        text-overflow: ellipsis
+        // border solid 1px settings-borders
+        background-color settings-foreground
+        color settings-background
+        
+    .is-valid
+        border solid 3px rgb(69, 212, 69)
+    .is-invalid
+        border solid 3px rgb(212, 69, 69)
+
+    #secretmanager-works-indicator
+        color rgb(69, 212, 69)
+        text-align left
+        margin-top 10px
+        margin-bottom 30px
+
+
+    #secretmanager-button-container
+        display: flex
+        justify-content: flex-end
+        margin-bottom 30px
+
+        button
+            background-color grey
+            // text-align: center
+            font-weight bold
+            min-width 120px
+            padding 10px
+            margin-left 3px
+            border-radius: 3px
+            color settings-foreground
+
+
+    #secretmanager-explaination-text
+        text-align: left
+        background-color settings-background
+        color settings-foreground
