@@ -115,7 +115,7 @@ latestTickersButtonClicked = (evnt) ->
 latestBalancesButtonClicked = (evnt) ->
     log "latestBalancesButtonClicked"
     try
-        reply = await observerClient.getLatestBalances("aave-euro")
+        reply = await observerClient.getLatestBalances("euro")
         displayRegularOperationsResponseContainer.textContent = JSON.stringify(reply, null, 4)
         olog reply
         info("getLatestBalances appearently successful!")

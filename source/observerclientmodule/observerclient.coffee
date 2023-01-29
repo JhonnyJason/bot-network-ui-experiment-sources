@@ -61,7 +61,8 @@ getLatestOrders = (assetPairs, subscriber, client) ->
 
     replyP = sci.getLatestOrders(server, authCode, assetPairs, subscriber)
     authP = client.authClient.createNextAuthCode(requestString)
-    [reply, ok] = await Promise.all([replyP, authP])
+    try [reply, ok] = await Promise.all([replyP, authP])
+    catch err then client.authClient.onError(err)
 
     if reply.error then throw new Error("getLatestorders replied with error: #{reply.error}") 
     return reply
@@ -76,9 +77,13 @@ getLatestTickers = (assetPairs, subscriber, client) ->
 
     replyP = sci.getLatestTickers(server, authCode, assetPairs, subscriber)
     authP = client.authClient.createNextAuthCode(requestString)
-    [reply, ok] = await Promise.all([replyP, authP])
+    try [reply, ok] = await Promise.all([replyP, authP])
+    catch err then client.authClient.onError(err)
 
-    if reply.error then throw new Error("getLatestTickers replied with error: #{reply.error}") 
+    if reply.error 
+        client.authClient.noticeError(reply.error)
+        throw new Error("getLatestTickers replied with error: #{reply.error}") 
+    
     return reply
 
 ############################################################
@@ -91,9 +96,13 @@ getLatestBalances = (assets, subscriber, client) ->
 
     replyP = sci.getLatestBalances(server, authCode, assets, subscriber)
     authP = client.authClient.createNextAuthCode(requestString)
-    [reply, ok] = await Promise.all([replyP, authP])
+    try [reply, ok] = await Promise.all([replyP, authP])
+    catch err then client.authClient.onError(err)
 
-    if reply.error then throw new Error("getLatestBalances replied with error: #{reply.error}") 
+    if reply.error 
+        client.authClient.noticeError(reply.error)
+        throw new Error("getLatestBalances replied with error: #{reply.error}") 
+    
     return reply
 
 
