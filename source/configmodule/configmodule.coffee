@@ -1,16 +1,5 @@
 
 ############################################################
-#region debug
-import { createLogFunctions } from "thingy-debug"
-{log, olog} = createLogFunctions("configmodule")
-#endregion
-
-########################################################
-export initialize = ->
-    log "initialize"
-    return    
-
-############################################################
 # Secret Manager
 export secretManagerOptions = [
     "https://secrets.dotv.ee",
@@ -29,10 +18,24 @@ export dataManagerOptions = [
 export defaultDataManagerChoice = 1
 
 ############################################################
-# StrunFun Backend
-export backendOptions = [
+# KrakenObserver Backend
+export krakenObserverBackendOptions = [
     "https://kraken-observer.dotv.ee",
     "https://kraken-observer.extensivlyon.coffee"
-    "https://localhost:6999"
+    "https://localhost:6999",
+    "https://localhost:6969"
 ]
-export defaultBackendChoice = 2
+export defaultKrakenObserverBackendOption = 3
+
+
+############################################################
+# Situation Analyzer Backend
+export situationAnalyzerBackendOptions = [
+    "https://situation-analyzer.dotv.ee",
+    "https://situation-analyzer.extensivlyon.coffee",
+    "https://localhost:6999",
+    "https://localhost:6969"
+]
+export defaultSituationAnalyzerBackendOption = 2
+
+############################################################

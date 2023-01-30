@@ -13,6 +13,7 @@ import * as secretmanagersettingsmodule from "./secretmanagersettingsmodule.js"
 import * as settingsmodule from "./settingsmodule.js"
 import * as statemodule from "./statemodule.js"
 import * as utilsmodule from "./utilsmodule.js"
+import * as websocketmodule from "./websocketmodule.js"
 
 Modules = {
     accountsettingsmodule,
@@ -30,6 +31,7 @@ Modules = {
     settingsmodule,
     statemodule,
     utilsmodule,
+    websocketmodule,
 }
 
 export default Modules

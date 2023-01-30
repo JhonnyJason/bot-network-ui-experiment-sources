@@ -18,6 +18,7 @@ export modulesToDebug = {
     # secretmanagementinterface: true
     # settingsmodule: true
     # statemodule: true
+    websocketmodule: true
     
 }
 
