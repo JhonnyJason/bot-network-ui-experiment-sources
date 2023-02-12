@@ -9,6 +9,7 @@ import * as messageboxmodule from "./messageboxmodule.js"
 import * as observerclientmodule from "./observerclientmodule.js"
 import * as qrdisplaymodule from "./qrdisplaymodule.js"
 import * as qrreadermodule from "./qrreadermodule.js"
+import * as rpcclientmodule from "./rpcclientmodule.js"
 import * as secretmanagersettingsmodule from "./secretmanagersettingsmodule.js"
 import * as settingsmodule from "./settingsmodule.js"
 import * as statemodule from "./statemodule.js"
@@ -27,6 +28,7 @@ Modules = {
     observerclientmodule,
     qrdisplaymodule,
     qrreadermodule,
+    rpcclientmodule,
     secretmanagersettingsmodule,
     settingsmodule,
     statemodule,

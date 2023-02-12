@@ -15,11 +15,11 @@ krakenObserverSocket = null
 export initialize = ->
     log "initialize"
     ## TODO handle chosen URLs
-    serverURL = "wss://localhost:6969"
+    serverURL = "wss://localhost:6969/thingy-rpc-socket"
     socketName = "krakenObserverSocket"
 
-    krakenObserverSocket = new ThingySocket(serverURL, socketName)
-    krakenObserverSocket.connect()
+    # krakenObserverSocket = new ThingySocket(serverURL, socketName)
+    # krakenObserverSocket.connect()
     return
 
 ############################################################
@@ -77,9 +77,9 @@ class ThingySocket
     ########################################################
     createSocket: ->
         log "#{@name}.createSocket"
-        if !readinessBlock? then readinessBlock = new Promise (resolve, reject) ->
-            readinessSignal = resolve
-            readinessReject = reject
+        if !@readinessBlock? then @readinessBlock = new Promise (resolve, reject) ->
+            @readinessSignal = resolve
+            @readinessReject = reject
 
         @socket = new WebSocket(@serverURL)
         @socket.onerror = @onError.bind(this)
@@ -91,11 +91,11 @@ class ThingySocket
     destroySocket: ->
         log "#{@name}.destroySocket"
 
-        if !readinessBlock? then readinessReject("destroyed!")
+        if !@readinessBlock? then readinessReject("destroyed!")
         
-        readinessBlock = null
-        readinessSignal = null
-        readinessReject = null
+        @readinessBlock = null
+        @readinessSignal = null
+        @readinessReject = null
 
         @socket.onerror = null
         @socket.onclose = null
@@ -111,9 +111,9 @@ class ThingySocket
         return if @keepDisconnected
 
         log "waiting for readinessBlock..."
-        await readinessBlock
+        await @readinessBlock
         log "sending message..."
-        socket.send(message)
+        @socket.send(message)
         return
 
     ########################################################
@@ -136,14 +136,15 @@ class ThingySocket
     onConnect: (evnt) ->
         log "#{@name}.onConnect"
         @reconnectCount = 0
-        @reconnectTimeoutMS = timeoutMSForReconnectCount(@reconnectCount = 0)
+        @reconnectTimeoutMS = timeoutMSForReconnectCount(0)
         
         if @readinessSignal?
             @readinessSignal()
-            @readinessSignal = null
-            @readinessBlock = null
-            @readinessReject
-        sendMessage("hello!")
+            # @readinessSignal = null
+            # @readinessBlock = null
+            # @readinessReject
+        @sendMessage("hello!")
+        log "finished onConnect..."
         return            
 
     onMessage: (evnt) ->

@@ -8,7 +8,8 @@ module.exports = {
             "qr-scanner": "^1.4.2",
             "thingy-network-base": "^0.0.4",
             "thingy-byte-utils": "^0.0.7",
-            "thingy-session-utils": "^0.0.3"
+            "thingy-session-utils": "^0.0.3",
+            "validatabletimestamp": "^0.0.1"
         }
     }
 }

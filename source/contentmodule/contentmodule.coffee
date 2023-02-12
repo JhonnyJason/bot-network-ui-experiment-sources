@@ -5,6 +5,7 @@ import { createLogFunctions } from "thingy-debug"
 #endregion
 
 ############################################################
+import { createClient as createRPCClient } from "./rpcclientmodule.js"
 import { createClient as createAuthClient } from "./authclientmodule.js"
 import { createClient as createObserverClient } from "./observerclientmodule.js"
 import * as state from "./statemodule.js"
@@ -34,7 +35,8 @@ export initialize = ->
     serverURL = "https://localhost:6969"
     o = {serverURL, secretKeyHex}
     
-    masterClient = createAuthClient(o)
+    # masterClient = createAuthClient(o)
+    masterClient = createRPCClient(o)
     observerClient = createObserverClient(o)
     return
 

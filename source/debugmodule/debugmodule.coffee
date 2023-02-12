@@ -15,6 +15,8 @@ export modulesToDebug = {
     # observerinterface: true
     # qrdisplaymodule: true
     # qrreadermodule: true
+    rpcclient: true
+    rpcclientmodule: true
     # secretmanagementinterface: true
     # settingsmodule: true
     # statemodule: true
