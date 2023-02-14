@@ -46,7 +46,7 @@ addClientButtonClicked = (evnt) ->
     try
         clientId = clientIdInput.value
         reply = await masterClient.addClient(clientId)
-        olog reply
+        olog {reply}
         info("ADD appearently successful!")
     catch err 
         m = "Error on trying to add a new client: #{err.message}"

@@ -355,7 +355,7 @@ removeClientToServe = (clientPublicKey, client) ->
         timestamp: timestamp
         signature: ""
     }
-    func = "addClientToServe"
+    func = "removeClientToServe"
     args = { clientPublicKey }
     rpcRequest = {auth, func, args}
 
