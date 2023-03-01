@@ -120,7 +120,7 @@ postRPCString = (server, requestString) ->
     try
         response = await fetch(url, options)
         if !response.ok then throw new Error("Response not ok - status: #{response.status}! body: #{await response.text()}")
-        return response.json()
+        return await response.json()
     catch err then throw new Error("Network Error: "+err.message)
 
 
@@ -213,6 +213,23 @@ authenticateResponse = (content, sigHex, idHex, timestamp) ->
     catch err then throw new Error("Error on authenticateResponse! " + err)
     return
 
+assertValidResponseIds = (auth, serverId, requestId) ->
+    if !auth.serverId? then throw new ResponseAuthError("No ServerId!")
+    if !auth.requestId? then throew new ResponseAuthError("No RequestId!")
+    if auth.serverId != serverId then throw new ResponseAuthError("Wrong ServerId!")
+    if auth.requestId != requestId then throw new ResponseAuthError("Wrong RequestId")
+    return
+
+assertValidResponseAuthCode = (responseString, auth, seedHex, serverId, requestId) ->
+    assertValidResponseIds(auth, serverId, requestId)
+    validatableStamp.assertValidity(auth.timestamp)
+    responseString = responseString.replace(auth.signature, "")
+    verified = await secUtl.verify(auth.signature, serverId, responseString)
+    if !verified then throw new ResponseAuthError("Invalid Signature!")
+    return
+    
+assertValidResponseSignature = (auth, serverId, requestId) ->
+
 #endregion
 
 
@@ -288,7 +305,6 @@ getNodeId = (client) ->
     # reply = await sci.getNodeId(sciURL, publicKey, timestamp, nonce, signature)
     # if reply.error? then throw new Error("getNodeId replied with error: "+reply.error)
     # return reply
-
 
 
 

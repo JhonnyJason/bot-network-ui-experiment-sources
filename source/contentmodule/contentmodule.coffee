@@ -10,6 +10,7 @@ import { createClient as createAuthClient } from "./authclientmodule.js"
 import { createClient as createObserverClient } from "./observerclientmodule.js"
 import * as state from "./statemodule.js"
 import { info, error } from "./messageboxmodule.js"
+import * as cryptoUtl from "secret-manager-crypto-utils"
 
 ############################################################
 masterClient = null
@@ -32,9 +33,16 @@ export initialize = ->
 
     ## Client Setup
     secretKeyHex = state.get("secretKeyHex")
+    if !secretKeyHex? 
+        keyPairHex = await cryptoUtl.createKeyPairHex()
+        state.save("secretKeyHex", keyPairHex.secretKeyHex)
+        state.save("publicKeyHex", keyPairHex.publicKeyHex)
+        secretKeyHex = keyPairHex.secretKeyHex
+    
     serverURL = "https://localhost:6969"
     o = {serverURL, secretKeyHex}
     
+
     # masterClient = createAuthClient(o)
     masterClient = createRPCClient(o)
     observerClient = createObserverClient(o)
