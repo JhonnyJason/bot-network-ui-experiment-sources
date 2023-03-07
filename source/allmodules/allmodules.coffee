@@ -13,6 +13,7 @@ import * as rpcclientmodule from "./rpcclientmodule.js"
 import * as secretmanagersettingsmodule from "./secretmanagersettingsmodule.js"
 import * as settingsmodule from "./settingsmodule.js"
 import * as statemodule from "./statemodule.js"
+import * as testermodule from "./testermodule.js"
 import * as utilsmodule from "./utilsmodule.js"
 import * as websocketmodule from "./websocketmodule.js"
 
@@ -32,6 +33,7 @@ Modules = {
     secretmanagersettingsmodule,
     settingsmodule,
     statemodule,
+    testermodule,
     utilsmodule,
     websocketmodule,
 }

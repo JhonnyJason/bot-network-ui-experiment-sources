@@ -11,7 +11,7 @@ export EXECUTION_ERROR = -32032
 rpcErrorMap = new Map()
 
 ############################################################
-#region Error message and htmlCode
+#region Error message For RPC Errors
 
 ############################################################
 rpcErrorMap.set(
@@ -85,8 +85,8 @@ export class ResponseAuthError extends Error
 
 ############################################################
 export class RPCError extends Error
-    constructor: (errorCode) ->
-        error = rpcErrorMap.get(errorCode)
-        super(error.message)
+    constructor: (func, remoteError) ->
+        error = rpcErrorMap.get(remoteError.code)
+        super("#{func}: #{error.message} (#{remoteError.message})")
         @rpcCode = errorCode
         @name = "RPCError"

@@ -8,19 +8,21 @@ export modulesToDebug = {
     # authclientmodule: true
     # authenticationinterface: true
     # configmodule: true
-    contentmodule: true
+    # contentmodule: true
     # messageboxmodule: true
     # observerclientmodule: true
     # observerclient: true
     # observerinterface: true
     # qrdisplaymodule: true
     # qrreadermodule: true
-    rpcclient: true
-    rpcclientmodule: true
+    # rpcclient: true
+    rpcpostclient: true
+    rpctestclient: true
     # secretmanagementinterface: true
     # settingsmodule: true
     # statemodule: true
-    websocketmodule: true
+    testermodule: true
+    # websocketmodule: true
     
 }
 
