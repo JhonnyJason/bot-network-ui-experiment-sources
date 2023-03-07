@@ -34,6 +34,20 @@ export initialize = ->
 
 runTests = (client) ->
     log "runTests"
-    response = await client.testSignatureAuth("Hello World! Nr.1")
-    olog response
+
+    try    
+        response = await client.testSignatureAuth("Hello World! Nr.1")
+        olog response
+    catch err then log err
+
+    try    
+        response = await client.testPublicAccessAuth("Hello World! Nr.2")
+        olog response
+    catch err then log err
+
+    try
+        response = await client.testAnonymousAuth("Hello World! Nr.3")
+        olog response
+    catch err then log err
+
     return

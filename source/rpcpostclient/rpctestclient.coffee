@@ -47,10 +47,10 @@ export class TestClient extends RPCPostClient
         func = "testAnonymousAuth"
         return @doRPC(func, args, authType)
 
-    testPublicAuth: (message) ->
-        authType = "public" 
+    testPublicAccessAuth: (message) ->
+        authType = "publicAccess" 
         args = { message }
-        func = "testPublicAuth"
+        func = "testPublicAccessAuth"
         return @doRPC(func, args, authType)
 
 

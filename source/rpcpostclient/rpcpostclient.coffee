@@ -55,7 +55,7 @@ export class RPCPostClient
     doRPC: (func, args, authType) ->
         switch authType
             when "anonymous" then return  doAnonymousRPC(func, args, this)
-            when "public" then return doPublicRPC(func, args, this)
+            when "publicAccess" then return doPublicAccessRPC(func, args, this)
             when "tokenSimple" then return doTokenSimpleRPC(func, args, this)
             when "tokenUnique" then return doTokenUniqueRPC(func, args, this)
             when "authCodeLight" then return doAuthCodeLightRPC(func, args, this)
@@ -91,10 +91,48 @@ incRequestId = (c) ->
 
 ########################################################
 doAnonymousRPC = (func, args, c) ->
-    return
+    # incRequestId(c)
 
-doPublicRPC = (func, args, c) ->
-    return
+    # type = "anonymous"
+    # requestId = c.requestId
+    # timestamp = validatableStamp.create()
+
+    # auth = { type, requestId, timestamp }
+    
+    auth = null
+    requestString = JSON.stringify({ auth, func, args })
+    serverId = c.serverId
+
+    response = await postRPCString(c.serverURL, requestString)
+    olog response
+    
+    if response.error then throw new RPCError(response.error)
+
+    return response.result 
+
+doPublicAccessRPC = (func, args, c) ->
+    incRequestId(c)
+
+    type = "publicAccess"
+    requestId = c.requestId
+    clientId = await c.getPublicKey()
+    timestamp = validatableStamp.create()
+    requestToken = null
+    auth = { type, clientId, requestId, timestamp, requestToken }
+
+    olog auth
+
+    requestString = JSON.stringify({ auth, func, args })
+    serverId = c.serverId
+
+    response = await postRPCString(c.serverURL, requestString)
+    olog response
+
+    authenticateServiceStatement(response, requestId, serverId)
+
+    if response.error then throw new RPCError(response.error)
+    return response.result 
+
 
 doTokenSimpleRPC = (func, args, c) ->
     return
@@ -127,10 +165,9 @@ doSignatureRPC = (func, args, type, c) ->
 
     response = await postRPCString(c.serverURL, requestString)
     olog response
-    await authenticateServiceSignature(response, requestId, c.serverId)
+    await authenticateServiceSignature(response, requestId, serverId)
     
     if response.error then throw new RPCError(response.error)
-
     return response.result 
 
 ############################################################
@@ -153,6 +190,22 @@ authenticateServiceSignature = (response, ourRequestId, ourServerId) ->
         verified = await secUtl.verify(signature, serverId, responseString)
         if !verified then throw new Error("Invalid Signature!")
 
+    catch err then throw new ResponseAuthError(err.message)
+    return
+
+authenticateServiceStatement = (response, ourRequestId, ourServerId) ->
+    try
+        { timestamp, requestId, serverId } = response.auth
+        
+        if !timestamp? then throw new Error("No Timestamp!")
+        if !requestId? then throw new Error("No RequestId!")
+        if !serverId? then throw new Error("No ServerId!")
+        
+        if requestId != ourRequestId then throw new Error("RequestId Mismatch!")
+        if serverId != ourServerId then throw new Error("ServerId Mismatch!")
+        
+        validatableStamp.assertValidity(timestamp)
+        
     catch err then throw new ResponseAuthError(err.message)
     return
 
