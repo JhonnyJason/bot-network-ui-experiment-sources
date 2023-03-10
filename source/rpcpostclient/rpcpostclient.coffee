@@ -11,7 +11,9 @@ import * as validatableStamp from "validatabletimestamp"
 # import * as tbut from "thingy-byte-utils"
 # import * as sess from "thingy-session-utils"
 
-import { NetworkError, ResponseAuthError, RPCError } from "./rpcerrors.js"
+import { 
+    NOT_AUTHORIZED, NetworkError, ResponseAuthError, RPCError 
+} from "./rpcerrors.js"
 
 #endregion
 
@@ -220,7 +222,10 @@ doTokenSimpleRPC = (func, args, c) ->
     olog { response }
 
     # in case of an error
-    if response.error then throw new RPCError(func, response.error)
+    if response.error
+        corruptSession = response.error.code? and response.error.code == NOT_AUTHORIZED
+        if corruptSession then c.sessionInfo = {}
+        throw new RPCError(func, response.error)
 
     await authenticateServiceStatement(response, requestId, serverId)
     return response.result 
