@@ -86,7 +86,8 @@ export class ResponseAuthError extends Error
 ############################################################
 export class RPCError extends Error
     constructor: (func, remoteError) ->
-        error = rpcErrorMap.get(remoteError.code)
+        errorCode = remoteError.code
+        error = rpcErrorMap.get(errorCode)
         super("#{func}: #{error.message} (#{remoteError.message})")
         @rpcCode = errorCode
         @name = "RPCError"

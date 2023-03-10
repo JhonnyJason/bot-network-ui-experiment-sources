@@ -109,7 +109,6 @@ incRequestId = (c) ->
     c.requestId = ++c.requestId % 10000000
     return
 
-
 ########################################################
 #region RPC execution functions
 
@@ -132,10 +131,13 @@ doSignatureRPC = (func, args, type, c) ->
     log requestString
 
     response = await postRPCString(c.serverURL, requestString)
-    olog response
+    olog { response }
+
+    # in case of an error
+    if response.error then throw new RPCError(func, response.error)
+
     await authenticateServiceSignature(response, requestId, serverId)
     
-    if response.error then throw new RPCError(response.error)
     return response.result 
 
 ########################################################
@@ -201,24 +203,45 @@ doPublicAccessRPC = (func, args, c) ->
 #region session RPCs
 doTokenSimpleRPC = (func, args, c) ->
     await establishSimpleTokenSession(c)    
-    # TODO implement
-    
-    
-    return
+    incRequestId(c)
+
+    type = "tokenSimple"
+    clientId = await c.getPublicKey()
+    requestId = c.requestId
+    timestamp = validatableStamp.create()
+    requestToken = c.sessionInfo.token
+
+    auth = { type, clientId, requestId, timestamp, requestToken }
+    rpcRequest = { auth, func, args }
+    requestString = JSON.stringify(rpcRequest)
+
+    serverId = await c.getServerId()
+    response = await postRPCString(c.serverURL, requestString)
+    olog { response }
+
+    # in case of an error
+    if response.error then throw new RPCError(func, response.error)
+
+    await authenticateServiceStatement(response, requestId, serverId)
+    return response.result 
 
 doTokenUniqueRPC  = (func, args, c) ->
     throw new Error("doTokenUniqueRPC: Not Implemented yet!")
-    # await establishUniqueTokenSession(c)    
+    # await establishUniqueTokenSession(c)
+    # incRequestId(c)
+
     return
 
 doAuthCodeLightRPC = (func, args, c) ->
     throw new Error("doAuthCodeLightRPC: Not Implemented yet!")
     # await establishAuthCodeLightSession(c)    
+    # incRequestId(c)
 
     return
 
 doAuthCodeSHA2RPC = (func, args, c) ->
     await establishAuthCodeSHA2Session(c)    
+    incRequestId(c)
     # TODO implement
 
     return
@@ -230,6 +253,8 @@ doAuthCodeSHA2RPC = (func, args, c) ->
 ############################################################
 #region session establishment
 startSessionExplicitly = (type, c) ->
+    incRequestId(c)
+
     sessionName = c.name
     args = { type, sessionName}
     

@@ -61,7 +61,27 @@ runTests = (client) ->
     catch err then log err
 
     try
-        response = await client.testTokenSimpleAuth("testClientSignatureAuth")
+        response = await client.testTokenSimpleAuth("testTokenSimpleAuth 0")
+        olog response
+    catch err then log err
+
+    try
+        response = await client.testTokenSimpleAuth("testTokenSimpleAuth 1")
+        olog response
+    catch err then log err
+
+    try
+        response = await client.testTokenSimpleAuth("testTokenSimpleAuth 2")
+        olog response
+    catch err then log err
+
+    try
+        response = await client.testTokenSimpleAuth("testTokenSimpleAuth 3")
+        olog response
+    catch err then log err
+
+    try
+        response = await client.testTokenSimpleAuth("testTokenSimpleAuth 4")
         olog response
     catch err then log err
 
