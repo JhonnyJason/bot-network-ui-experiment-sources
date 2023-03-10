@@ -8,7 +8,7 @@ export modulesToDebug = {
     # authclientmodule: true
     # authenticationinterface: true
     # configmodule: true
-    # contentmodule: true
+    contentmodule: true
     # messageboxmodule: true
     # observerclientmodule: true
     # observerclient: true

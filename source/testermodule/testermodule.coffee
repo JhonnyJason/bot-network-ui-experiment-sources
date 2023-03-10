@@ -36,17 +36,32 @@ runTests = (client) ->
     log "runTests"
 
     try    
-        response = await client.testSignatureAuth("Hello World! Nr.1")
+        response = await client.testSignatureAuth("testSignatureAuth")
         olog response
     catch err then log err
 
     try    
-        response = await client.testPublicAccessAuth("Hello World! Nr.2")
+        response = await client.testPublicAccessAuth("testPublicAccessAuth")
         olog response
     catch err then log err
 
     try
-        response = await client.testAnonymousAuth("Hello World! Nr.3")
+        response = await client.testAnonymousAuth("testAnonymousAuth")
+        olog response
+    catch err then log err
+
+    try
+        response = await client.testMasterSignatureAuth("testMasterSignatureAuth")
+        olog response
+    catch err then log err
+
+    try
+        response = await client.testClientSignatureAuth("testClientSignatureAuth")
+        olog response
+    catch err then log err
+
+    try
+        response = await client.testTokenSimpleAuth("testClientSignatureAuth")
         olog response
     catch err then log err
 

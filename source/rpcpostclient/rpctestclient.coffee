@@ -28,13 +28,13 @@ export class TestClient extends RPCPostClient
         return @doRPC(func, args, authType)
 
     testMasterSignatureAuth: (message) ->
-        authType = "signature" 
+        authType = "masterSignature" 
         args = { message }
         func = "testMasterSignatureAuth"
         return @doRPC(func, args, authType)
 
     testClientSignatureAuth: (message) ->
-        authType = "signature" 
+        authType = "clientSignature" 
         args = { message }
         func = "testClientSignatureAuth"
         return @doRPC(func, args, authType)

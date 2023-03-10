@@ -22,8 +22,15 @@ export class RPCPostClient
         @serverId = o.serverId
         @secretKeyHex = o.secretKeyHex
         @publicKeyHex = o.publicKeyHex
+        @name = "rpc-client"
+        @allowImplicitSessions = o.allowImplicitSessions
         @requestId = 0
         @sessionInfo = {}
+        @anonymousToken = null
+        @publicToken = null
+        if o.anonymousToken? then @anonymousToken = o.anonymousToken
+        if o.publicToken? then @publicToken = o.publicToken
+        if o.name? then @name = o.name
 
     ########################################################
     updateServer: (serverURL, serverId) ->
@@ -54,6 +61,7 @@ export class RPCPostClient
     ########################################################
     doRPC: (func, args, authType) ->
         switch authType
+            when "none" then return doNoAuthRPC(func, args, this)
             when "anonymous" then return  doAnonymousRPC(func, args, this)
             when "publicAccess" then return doPublicAccessRPC(func, args, this)
             when "tokenSimple" then return doTokenSimpleRPC(func, args, this)
@@ -64,8 +72,11 @@ export class RPCPostClient
                 return doSignatureRPC(func, args, authType, this)
             else throw new Error("doRPC: Unknown authType! '#{authType}'")
         return
+    
 
 ########################################################
+#region internal functions
+
 postRPCString = (url, requestString) ->
     options =
         method: 'POST'
@@ -76,11 +87,22 @@ postRPCString = (url, requestString) ->
 
     try
         response = await fetch(url, options)
-        if !response.ok then throw new Error("Response not ok - status: #{response.status}! body: #{await response.text()}")
         return await response.json()
-    catch err then throw new NetworkError(err.message)
+    catch err
+        baseMsg = "Error! RPC could not receive a JSON response!"
+        
+        try 
+            bodyText = "Body:  #{await response.text()}"
+            statusText = "HTTP-Status: #{response.status}"
+        catch err2
+            details = "No response could be retrieved! details: #{err.message}"
+            errorMsg = "#{baseMsg} #{details}" 
+            throw new NetworkError(errorMsg)
 
-
+        details = "#{statusText} #{bodyText}"
+        errorMsg = "#{baseMsg} #{details}"
+        throw new NetworkError(errorMsg)
+    return
 
 ########################################################
 incRequestId = (c) ->
@@ -88,64 +110,10 @@ incRequestId = (c) ->
     return
 
 
+########################################################
+#region RPC execution functions
 
 ########################################################
-doAnonymousRPC = (func, args, c) ->
-    # incRequestId(c)
-
-    # type = "anonymous"
-    # requestId = c.requestId
-    # timestamp = validatableStamp.create()
-
-    # auth = { type, requestId, timestamp }
-    
-    auth = null
-    requestString = JSON.stringify({ auth, func, args })
-    serverId = c.serverId
-
-    response = await postRPCString(c.serverURL, requestString)
-    olog response
-    
-    if response.error then throw new RPCError(response.error)
-
-    return response.result 
-
-doPublicAccessRPC = (func, args, c) ->
-    incRequestId(c)
-
-    type = "publicAccess"
-    requestId = c.requestId
-    clientId = await c.getPublicKey()
-    timestamp = validatableStamp.create()
-    requestToken = null
-    auth = { type, clientId, requestId, timestamp, requestToken }
-
-    olog auth
-
-    requestString = JSON.stringify({ auth, func, args })
-    serverId = c.serverId
-
-    response = await postRPCString(c.serverURL, requestString)
-    olog response
-
-    authenticateServiceStatement(response, requestId, serverId)
-
-    if response.error then throw new RPCError(response.error)
-    return response.result 
-
-
-doTokenSimpleRPC = (func, args, c) ->
-    return
-
-doTokenUniqueRPC  = (func, args, c) ->
-    return
-
-doAuthCodeLightRPC = (func, args, c) ->
-    return
-
-doAuthCodeSHA2RPC = (func, args, c) ->
-    return
-
 doSignatureRPC = (func, args, type, c) ->
     incRequestId(c)
 
@@ -170,7 +138,134 @@ doSignatureRPC = (func, args, type, c) ->
     if response.error then throw new RPCError(response.error)
     return response.result 
 
+########################################################
+#region public RPCs
+doNoAuthRPC = (func, args, c) ->
+    auth = null
+    requestString = JSON.stringify({ auth, func, args })
+    serverId = c.serverId
+
+    response = await postRPCString(c.serverURL, requestString)
+    olog response
+    
+    if response.error then throw new RPCError(response.error)
+
+    return response.result 
+
+doAnonymousRPC = (func, args, c) ->
+    incRequestId(c)
+
+    type = "anonymous"
+    requestId = c.requestId
+    timestamp = validatableStamp.create()
+    requestToken = c.anonymousToken
+
+    auth = { type, requestId, timestamp, requestToken }
+    
+    requestString = JSON.stringify({ auth, func, args })
+    serverId = c.serverId
+
+    response = await postRPCString(c.serverURL, requestString)
+    olog response
+    
+    if response.error then throw new RPCError(response.error)
+
+    return response.result 
+
+doPublicAccessRPC = (func, args, c) ->
+    incRequestId(c)
+
+    type = "publicAccess"
+    requestId = c.requestId
+    clientId = await c.getPublicKey()
+    timestamp = validatableStamp.create()
+    requestToken = c.publicToken
+    auth = { type, clientId, requestId, timestamp, requestToken }
+
+    olog auth
+
+    requestString = JSON.stringify({ auth, func, args })
+    serverId = c.serverId
+
+    response = await postRPCString(c.serverURL, requestString)
+    olog response
+
+    authenticateServiceStatement(response, requestId, serverId)
+
+    if response.error then throw new RPCError(response.error)
+    return response.result 
+
+#endregion
+
+########################################################
+#region session RPCs
+doTokenSimpleRPC = (func, args, c) ->
+    await establishSimpleTokenSession(c)    
+    # TODO implement
+    
+    
+    return
+
+doTokenUniqueRPC  = (func, args, c) ->
+    throw new Error("doTokenUniqueRPC: Not Implemented yet!")
+    # await establishUniqueTokenSession(c)    
+    return
+
+doAuthCodeLightRPC = (func, args, c) ->
+    throw new Error("doAuthCodeLightRPC: Not Implemented yet!")
+    # await establishAuthCodeLightSession(c)    
+
+    return
+
+doAuthCodeSHA2RPC = (func, args, c) ->
+    await establishAuthCodeSHA2Session(c)    
+    # TODO implement
+
+    return
+
+#endregion
+
+#endregion
+
 ############################################################
+#region session establishment
+startSessionExplicitly = (type, c) ->
+    sessionName = c.name
+    args = { type, sessionName}
+    
+    func = "startSession"
+    authType = "clientSignature"
+    try return await c.doRPC(func, args, authType)
+    catch err then throw new Error("Explicit Start failed: #{err.message}")
+    return
+
+
+establishSimpleTokenSession = (c) ->
+    if c.sessionInfo.type == "tokenSimple" and c.sessionInfo.token? then return
+    try
+        c.sessionInfo.type = "tokenSimple"
+        if c.allowImplicitSessions
+            c.sessionInfo.token = await generateImplicitSimpleToken(c)
+        else
+            c.sessionInfo.token = await getExplicitSimpleToken(c)
+    catch err
+        message = "Could not establish a simple Token session! Details: #{err.message}"
+        throw new Error(message)
+    return
+
+generateImplicitSimpleToken = (c) ->
+    return "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+
+getExplicitSimpleToken = (c) ->
+    return startSessionExplicitly("tokenSimple", c)
+
+
+
+
+#endregion
+
+############################################################
+#region response Authentication
 authenticateServiceSignature = (response, ourRequestId, ourServerId) ->
     try
         { signature, timestamp, requestId, serverId } = response.auth
@@ -208,6 +303,15 @@ authenticateServiceStatement = (response, ourRequestId, ourServerId) ->
         
     catch err then throw new ResponseAuthError(err.message)
     return
+
+#endregion
+
+#endregion
+
+
+
+
+
 
 # ############################################################
 # #region internalFunctions

@@ -5,9 +5,10 @@ import { createLogFunctions } from "thingy-debug"
 #endregion
 
 ############################################################
-import { createClient as createRPCClient } from "./rpcclientmodule.js"
-import { createClient as createAuthClient } from "./authclientmodule.js"
-import { createClient as createObserverClient } from "./observerclientmodule.js"
+# import { createClient as createRPCClient } from "./rpcclientmodule.js"
+# import { createClient as createAuthClient } from "./authclientmodule.js"
+# import { createClient as createObserverClient } from "./observerclientmodule.js"
+import { MasterClient } from "./rpcmasterclient.js"
 import * as state from "./statemodule.js"
 import { info, error } from "./messageboxmodule.js"
 import * as cryptoUtl from "secret-manager-crypto-utils"
@@ -30,23 +31,23 @@ export initialize = ->
     latestTickersButton.addEventListener("click", latestTickersButtonClicked)
     latestBalancesButton.addEventListener("click", latestBalancesButtonClicked)
 
-    return
-    # ## Client Setup
-    # secretKeyHex = state.get("secretKeyHex")
-    # if !secretKeyHex? 
-    #     keyPairHex = await cryptoUtl.createKeyPairHex()
-    #     state.save("secretKeyHex", keyPairHex.secretKeyHex)
-    #     state.save("publicKeyHex", keyPairHex.publicKeyHex)
-    #     secretKeyHex = keyPairHex.secretKeyHex
-    
-    # serverURL = "https://localhost:6969"
-    # o = {serverURL, secretKeyHex}
-    
+    ## TODO remove this code - just for testing
+    ## Client Setup
+    secretKeyHex = state.get("secretKeyHex")
+    if !secretKeyHex? 
+        keyPairHex = await cryptoUtl.createKeyPairHex()
+        state.save("secretKeyHex", keyPairHex.secretKeyHex)
+        state.save("publicKeyHex", keyPairHex.publicKeyHex)
+        secretKeyHex = keyPairHex.secretKeyHex
 
-    # # masterClient = createAuthClient(o)
-    # masterClient = createRPCClient(o)
-    # observerClient = createObserverClient(o)
-    # return
+    publicKeyHex = state.get("publicKeyHex")
+    serverURL = "https://localhost:6969/thingy-post-rpc"
+    serverId = "194202ec1cea1cad68af7034803ca53e1687a5170e3b29bdf6fae432003c4927"
+    # options = { serverURL, secretKeyHex }
+    options = { serverURL, serverId,  secretKeyHex, publicKeyHex }
+    
+    masterClient = new MasterClient(options)
+    return
 
 ############################################################
 addClientButtonClicked = (evnt) ->
