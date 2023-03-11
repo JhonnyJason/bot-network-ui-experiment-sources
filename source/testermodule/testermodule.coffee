@@ -6,9 +6,17 @@ import { createLogFunctions } from "thingy-debug"
 
 ############################################################
 import * as state from "./statemodule.js"
+import * as payloads from "./payloads.js"
 
 ############################################################
 import { TestClient } from "./rpctestclient.js"
+
+
+results = {}
+payloadSize = ""
+payloadLoad = ""
+
+rpcPostClient = null
 
 ############################################################
 export initialize = ->
@@ -28,67 +36,159 @@ export initialize = ->
     options = { serverURL, serverId,  secretKeyHex, publicKeyHex }
     
     rpcPostClient = new TestClient(options)
-    runTests(rpcPostClient)
+    # runTests()
     return
 
 
-runTests = (client) ->
+############################################################
+runNoneAuthTests = (count) ->
+    resultKey = "NoneAuthx#{count} - #{payloadSize}"
+    try    
+        before = performance.now()
+
+        while(count--)
+            response = await rpcPostClient.testNoneAuth(payloadLoad)
+    
+        after = performance.now()
+        diff = after - before
+        timespan = "#{diff}ms"
+        results[resultKey] = timespan
+    catch err then results[resultKey] = err.message
+    return
+
+runAnonymousTests = (count) ->
+    resultKey = "Anonymousx#{count} - #{payloadSize}"
+    try    
+        before = performance.now()
+
+        while(count--)
+            response = await rpcPostClient.testAnonymousAuth(payloadLoad)
+    
+        after = performance.now()
+        diff = after - before
+        timespan = "#{diff}ms"
+        results[resultKey] = timespan
+    catch err then results[resultKey] = err.message
+    return
+
+runPublicAcessTests = (count) ->
+    resultKey = "PublicAccessx#{count} - #{payloadSize}"
+    try    
+        before = performance.now()
+
+        while(count--)
+            response = await rpcPostClient.testPublicAccessAuth(payloadLoad)
+    
+        after = performance.now()
+        diff = after - before
+        timespan = "#{diff}ms"
+        results[resultKey] = timespan
+    catch err then results[resultKey] = err.message
+    return
+
+runSignatureTests = (count) ->
+    resultKey = "Signaturex#{count} - #{payloadSize}"
+    try    
+        before = performance.now()
+
+        while(count--)
+            response = await rpcPostClient.testSignatureAuth(payloadLoad)
+    
+        after = performance.now()
+        diff = after - before
+        timespan = "#{diff}ms"
+        results[resultKey] = timespan
+    catch err then results[resultKey] = err.message
+    return
+
+############################################################
+runTokenSimpleTests = (count) ->
+    resultKey = "TokenSimplex#{count} - #{payloadSize}"
+    try    
+        before = performance.now()
+
+        while(count--)
+            response = await rpcPostClient.testTokenSimpleAuth(payloadLoad)
+    
+        after = performance.now()
+        diff = after - before
+        timespan = "#{diff}ms"
+        results[resultKey] = timespan
+    catch err then results[resultKey] = err.message
+    return
+
+############################################################
+runAuthCodeSHA2Tests = (count) ->
+    resultKey = "AuthCodeSHA2x#{count} - #{payloadSize}"
+    try    
+        before = performance.now()
+
+        while(count--)
+            response = await rpcPostClient.testAuthCodeSHA2Auth(payloadLoad)
+    
+        after = performance.now()
+        diff = after - before
+        timespan = "#{diff}ms"
+        results[resultKey] = timespan
+    catch err then results[resultKey] = err.message
+    return
+
+############################################################
+runTests = ->
     log "runTests"
 
-    try    
-        response = await client.testSignatureAuth("testSignatureAuth")
-        olog response
-    catch err then log err
+    payloadSize = "small"
+    payloadLoad = payloads.smallPayload
 
-    try    
-        response = await client.testPublicAccessAuth("testPublicAccessAuth")
-        olog response
-    catch err then log err
+    await runNoneAuthTests(100)
+    await runAnonymousTests(100)
+    await runPublicAcessTests(100)
+    await runSignatureTests(100)
+    await runTokenSimpleTests(100)
+    await runAuthCodeSHA2Tests(100)
 
-    try
-        response = await client.testAnonymousAuth("testAnonymousAuth")
-        olog response
-    catch err then log err
+    await runNoneAuthTests(500)
+    await runAnonymousTests(500)
+    await runPublicAcessTests(500)
+    await runSignatureTests(500)
+    await runTokenSimpleTests(500)
+    await runAuthCodeSHA2Tests(500)
 
-    try
-        response = await client.testMasterSignatureAuth("testMasterSignatureAuth")
-        olog response
-    catch err then log err
+    payloadSize = "medium"
+    payloadLoad = payloads.mediumPayload
 
-    try
-        response = await client.testClientSignatureAuth("testClientSignatureAuth")
-        olog response
-    catch err then log err
+    await runNoneAuthTests(100)
+    await runAnonymousTests(100)
+    await runPublicAcessTests(100)
+    await runSignatureTests(100)
+    await runTokenSimpleTests(100)
+    await runAuthCodeSHA2Tests(100)
 
-    try
-        response = await client.testTokenSimpleAuth("testTokenSimpleAuth 0")
-        olog response
-    catch err then log err
+    await runNoneAuthTests(500)
+    await runAnonymousTests(500)
+    await runPublicAcessTests(500)
+    await runSignatureTests(500)
+    await runTokenSimpleTests(500)
+    await runAuthCodeSHA2Tests(500)
 
-    try
-        response = await client.testTokenSimpleAuth("testTokenSimpleAuth 1")
-        olog response
-    catch err then log err
 
-    try
-        response = await client.testTokenSimpleAuth("testTokenSimpleAuth 2")
-        olog response
-    catch err then log err
+    payloadSize = "large"
+    payloadLoad = payloads.largePayload
 
-    try
-        response = await client.testTokenSimpleAuth("testTokenSimpleAuth 3")
-        olog response
-    catch err then log err
+    await runNoneAuthTests(100)
+    await runAnonymousTests(100)
+    await runPublicAcessTests(100)
+    await runSignatureTests(100)
+    await runTokenSimpleTests(100)
+    await runAuthCodeSHA2Tests(100)
 
-    try
-        response = await client.testTokenSimpleAuth("testTokenSimpleAuth 4")
-        olog response
-    catch err then log err
+    await runNoneAuthTests(500)
+    await runAnonymousTests(500)
+    await runPublicAcessTests(500)
+    await runSignatureTests(500)
+    await runTokenSimpleTests(500)
+    await runAuthCodeSHA2Tests(500)
 
-    try
-        response = await client.testAuthCodeSHA2Auth("testAuthCodeSHA2Auth 0")
-        olog response
-    catch err then log err
-
+    olog results
 
     return

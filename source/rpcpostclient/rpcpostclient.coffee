@@ -144,10 +144,10 @@ doSignatureRPC = (func, args, type, c) ->
     requestString = JSON.stringify(rpcRequest)
     sigHex = await secUtl.createSignature(requestString, c.secretKeyHex)
     requestString = requestString.replace('"signature":""', '"signature":"'+sigHex+'"')
-    log requestString
+    # log requestString
 
     response = await postRPCString(c.serverURL, requestString)
-    olog { response }
+    # olog { response }
 
     # in case of an error
     if response.error then throw new RPCError(func, response.error)
@@ -164,7 +164,7 @@ doNoAuthRPC = (func, args, c) ->
     serverId = c.serverId
 
     response = await postRPCString(c.serverURL, requestString)
-    olog response
+    # olog response
     
     if response.error then throw new RPCError(response.error)
 
@@ -184,7 +184,7 @@ doAnonymousRPC = (func, args, c) ->
     serverId = c.serverId
 
     response = await postRPCString(c.serverURL, requestString)
-    olog response
+    # olog response
     
     if response.error then throw new RPCError(response.error)
 
@@ -200,13 +200,13 @@ doPublicAccessRPC = (func, args, c) ->
     requestToken = c.publicToken
     auth = { type, clientId, requestId, timestamp, requestToken }
 
-    olog auth
+    # olog auth
 
     requestString = JSON.stringify({ auth, func, args })
     serverId = c.serverId
 
     response = await postRPCString(c.serverURL, requestString)
-    olog response
+    # olog response
 
     authenticateServiceStatement(response, requestId, serverId)
 
@@ -234,7 +234,7 @@ doTokenSimpleRPC = (func, args, c) ->
 
     serverId = await c.getServerId()
     response = await postRPCString(c.serverURL, requestString)
-    olog { response }
+    # olog { response }
 
     # in case of an error
     if response.error
@@ -264,7 +264,7 @@ doAuthCodeSHA2RPC = (func, args, c) ->
     incRequestId(c)
 
     session = c.sessions[AUTHCODE_SHA2]
-    
+
     type = "authCodeSHA2"
     clientId = await c.getPublicKey()
     requestId = c.requestId
@@ -279,10 +279,10 @@ doAuthCodeSHA2RPC = (func, args, c) ->
     requestString = JSON.stringify(rpcRequest)
     authCode = await sess.createAuthCode(session.seedHex, requestString)
     requestString = requestString.replace('"requestAuthCode":""', '"requestAuthCode":"'+authCode+'"')
-    log requestString
+    # log requestString
 
     response = await postRPCString(c.serverURL, requestString)
-    olog { response }
+    # olog { response }
 
     # in case of an error
     if response.error
@@ -290,7 +290,7 @@ doAuthCodeSHA2RPC = (func, args, c) ->
         if corruptSession then c.sessions[AUTHCODE_SHA2] = null
         throw new RPCError(func, response.error)
 
-    await authenticateServiceAuthCodeSHA2(response, requestId, serverId)
+    await authenticateServiceAuthCodeSHA2(response, requestId, serverId, c)
     
     return response.result 
 
@@ -366,7 +366,10 @@ establishSHA2AuthCodeSession = (c) ->
 #region response Authentication
 authenticateServiceSignature = (response, ourRequestId, ourServerId) ->
     try
-        { signature, timestamp, requestId, serverId } = response.auth
+        signature = response.auth.signature
+        timestamp = response.auth.timestamp
+        requestId = response.auth.requestId
+        serverId = response.auth.serverId
         
         if !signature? then throw new Error("No Signature!")
         if !timestamp? then throw new Error("No Timestamp!")
@@ -388,7 +391,9 @@ authenticateServiceSignature = (response, ourRequestId, ourServerId) ->
 
 authenticateServiceStatement = (response, ourRequestId, ourServerId) ->
     try
-        { timestamp, requestId, serverId } = response.auth
+        timestamp = response.auth.timestamp
+        requestId = response.auth.requestId
+        serverId = response.auth.serverId
         
         if !timestamp? then throw new Error("No Timestamp!")
         if !requestId? then throw new Error("No RequestId!")
@@ -402,9 +407,63 @@ authenticateServiceStatement = (response, ourRequestId, ourServerId) ->
     catch err then throw new ResponseAuthError(err.message)
     return
 
-authenticateServiceAuthCodeSHA2 = (response, ourRequestId, ourServerId) ->
-    throw new Error("Not implemented yet!")
+authenticateServiceAuthCodeSHA2 = (response, ourRequestId, ourServerId, c) ->
+    try
+        responseAuthCode = response.auth.responseAuthCode
+        timestamp = response.auth.timestamp
+        requestId = response.auth.requestId
+        serverId = response.auth.serverId
+        
+        if !responseAuthCode? then throw new Error("No ResponseAuthCode!")
+        if !timestamp? then throw new Error("No Timestamp!")
+        if !requestId? then throw new Error("No RequestId!")
+        if !serverId? then throw new Error("No ServerId!")
+        
+        if requestId != ourRequestId then throw new Error("RequestId Mismatch!")
+        if serverId != ourServerId then throw new Error("ServerId Mismatch!")
+        
+        validatableStamp.assertValidity(timestamp)
+        
+        session = c.sessions[AUTHCODE_SHA2]
+        if !session? or !session.seedHex? then throw new Error("Local session object has become invalid!")
+        response.auth.responseAuthCode = ""
+        responseString = JSON.stringify(response)
+        # log responseString
+        authCode = await sess.createAuthCode(session.seedHex, responseString)
+        # olog { authCode, responseAuthCode }
+        
+        if authCode != responseAuthCode then throw new Error("AuthCodes did not Match!")
+    catch err then throw new ResponseAuthError("authenticateServiceAuthCodeSHA2: #{err.message}")
     return
+
+authenticateServiceAuthCodeLight = (response, ourRequestId, ourServerId, c) ->
+    try
+        responseAuthCode = response.auth.responseAuthCode
+        timestamp = response.auth.timestamp
+        requestId = response.auth.requestId
+        serverId = response.auth.serverId
+        
+        if !responseAuthCode? then throw new Error("No ResponseAuthCode!")
+        if !timestamp? then throw new Error("No Timestamp!")
+        if !requestId? then throw new Error("No RequestId!")
+        if !serverId? then throw new Error("No ServerId!")
+        
+        if requestId != ourRequestId then throw new Error("RequestId Mismatch!")
+        if serverId != ourServerId then throw new Error("ServerId Mismatch!")
+        
+        validatableStamp.assertValidity(timestamp)
+        
+        session = c.sessions[AUTHCODE_Light]
+        if !session? or !session.seedHex? then throw new Error("Local session object has become invalid!")
+        response.auth.requestAuthCode = ""
+        responseString = JSON.stringify(response)
+
+        throw new Error("Not implemented yet!")
+        # authCode = await sess.createAuthCodeLight(session.seedHex, requestString)
+        if authCode != responseAuthCode then throw new Error("AuthCodes did not Match!")
+    catch err then throw new ResponseAuthError("authenticateServiceAuthCodeLight: #{err.message}")
+    return
+
 
 #endregion
 

@@ -41,6 +41,12 @@ export class TestClient extends RPCPostClient
 
 
     ########################################################
+    testNoneAuth: (message) ->
+        authType = "none" 
+        args = { message }
+        func = "testAnonymousAuth"
+        return @doRPC(func, args, authType)
+
     testAnonymousAuth: (message) ->
         authType = "anonymous" 
         args = { message }
