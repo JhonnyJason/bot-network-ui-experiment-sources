@@ -76,7 +76,7 @@ export class TestClient extends RPCPostClient
         return @doRPC(func, args, authType)
 
     testAuthCodeSHA2Auth: (message) ->
-        authType = "tokenUnique" 
+        authType = "authCodeSHA2" 
         args = { message }
         func = "testAuthCodeSHA2Auth"
         return @doRPC(func, args, authType)

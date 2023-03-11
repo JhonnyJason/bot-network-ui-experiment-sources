@@ -9,7 +9,7 @@ import { createLogFunctions } from "thingy-debug"
 import * as secUtl from "secret-manager-crypto-utils"
 import * as validatableStamp from "validatabletimestamp"
 # import * as tbut from "thingy-byte-utils"
-# import * as sess from "thingy-session-utils"
+import * as sess from "thingy-session-utils"
 
 import { 
     NOT_AUTHORIZED, NetworkError, ResponseAuthError, RPCError 
@@ -18,21 +18,29 @@ import {
 #endregion
 
 ############################################################
+TOKEN_SIMPLE = 0
+TOKEN_UNIQUE = 1
+AUTHCODE_LIGHT = 2
+AUTHCODE_SHA2 = 3
+
+############################################################
 export class RPCPostClient
     constructor: (o) ->
         @serverURL = o.serverURL
         @serverId = o.serverId
+        @serverContext = "thingy-rpc-post-connection"
         @secretKeyHex = o.secretKeyHex
         @publicKeyHex = o.publicKeyHex
-        @name = "rpc-client"
+        @name = "rpc-client"+randomPostfix()
         @allowImplicitSessions = o.allowImplicitSessions
         @requestId = 0
-        @sessionInfo = {}
+        @sessions = new Array(4)
         @anonymousToken = null
         @publicToken = null
         if o.anonymousToken? then @anonymousToken = o.anonymousToken
         if o.publicToken? then @publicToken = o.publicToken
         if o.name? then @name = o.name
+        if o.serverContext? then @serverContext = o.serverContext
 
     ########################################################
     updateServer: (serverURL, serverId) ->
@@ -79,6 +87,12 @@ export class RPCPostClient
 ########################################################
 #region internal functions
 
+########################################################
+randomPostfix = ->
+    rand = Math.random()
+    return Math.round(rand * 1000)
+
+########################################################
 postRPCString = (url, requestString) ->
     options =
         method: 'POST'
@@ -210,10 +224,11 @@ doTokenSimpleRPC = (func, args, c) ->
     type = "tokenSimple"
     clientId = await c.getPublicKey()
     requestId = c.requestId
+    name = c.name
     timestamp = validatableStamp.create()
-    requestToken = c.sessionInfo.token
+    requestToken = c.sessions[TOKEN_SIMPLE].token
 
-    auth = { type, clientId, requestId, timestamp, requestToken }
+    auth = { type, clientId, name, requestId, timestamp, requestToken }
     rpcRequest = { auth, func, args }
     requestString = JSON.stringify(rpcRequest)
 
@@ -224,7 +239,7 @@ doTokenSimpleRPC = (func, args, c) ->
     # in case of an error
     if response.error
         corruptSession = response.error.code? and response.error.code == NOT_AUTHORIZED
-        if corruptSession then c.sessionInfo = {}
+        if corruptSession then c.sessions[TOKEN_SIMPLE] = null
         throw new RPCError(func, response.error)
 
     await authenticateServiceStatement(response, requestId, serverId)
@@ -245,11 +260,39 @@ doAuthCodeLightRPC = (func, args, c) ->
     return
 
 doAuthCodeSHA2RPC = (func, args, c) ->
-    await establishAuthCodeSHA2Session(c)    
+    await establishSHA2AuthCodeSession(c)    
     incRequestId(c)
-    # TODO implement
 
-    return
+    session = c.sessions[AUTHCODE_SHA2]
+    
+    type = "authCodeSHA2"
+    clientId = await c.getPublicKey()
+    requestId = c.requestId
+    name = c.name
+    timestamp = validatableStamp.create()
+    requestAuthCode = ""
+
+    auth = { type, clientId, name, requestId, timestamp, requestAuthCode }
+    rpcRequest = { auth, func, args }
+
+    serverId = await c.getServerId()
+    requestString = JSON.stringify(rpcRequest)
+    authCode = await sess.createAuthCode(session.seedHex, requestString)
+    requestString = requestString.replace('"requestAuthCode":""', '"requestAuthCode":"'+authCode+'"')
+    log requestString
+
+    response = await postRPCString(c.serverURL, requestString)
+    olog { response }
+
+    # in case of an error
+    if response.error
+        corruptSession = response.error.code? and response.error.code == NOT_AUTHORIZED
+        if corruptSession then c.sessions[AUTHCODE_SHA2] = null
+        throw new RPCError(func, response.error)
+
+    await authenticateServiceAuthCodeSHA2(response, requestId, serverId)
+    
+    return response.result 
 
 #endregion
 
@@ -260,8 +303,8 @@ doAuthCodeSHA2RPC = (func, args, c) ->
 startSessionExplicitly = (type, c) ->
     incRequestId(c)
 
-    sessionName = c.name
-    args = { type, sessionName}
+    name = c.name
+    args = { type, name }
     
     func = "startSession"
     authType = "clientSignature"
@@ -271,13 +314,14 @@ startSessionExplicitly = (type, c) ->
 
 
 establishSimpleTokenSession = (c) ->
-    if c.sessionInfo.type == "tokenSimple" and c.sessionInfo.token? then return
+    if c.sessions[TOKEN_SIMPLE]? and c.sessions[TOKEN_SIMPLE].token? then return
     try
-        c.sessionInfo.type = "tokenSimple"
+        session = {}
         if c.allowImplicitSessions
-            c.sessionInfo.token = await generateImplicitSimpleToken(c)
+            session.token = await generateImplicitSimpleToken(c)
         else
-            c.sessionInfo.token = await getExplicitSimpleToken(c)
+            session.token = await getExplicitSimpleToken(c)
+        c.sessions[TOKEN_SIMPLE] = session
     catch err
         message = "Could not establish a simple Token session! Details: #{err.message}"
         throw new Error(message)
@@ -286,10 +330,34 @@ establishSimpleTokenSession = (c) ->
 generateImplicitSimpleToken = (c) ->
     return "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
 
+generateImplicitAuthCodeSeed = (c) ->
+    return "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+
+generateExplicitAuthCodeSeed = (timestamp, c) ->
+    serverContext = c.serverContext
+    specificContext = c.name
+    context = "#{specificContext}:#{serverContext}_#{timestamp}"
+    return await secUtl.createSharedSecretHashHex(c.secretKeyHex, c.serverId, context)
+
+
 getExplicitSimpleToken = (c) ->
     return startSessionExplicitly("tokenSimple", c)
 
 
+establishSHA2AuthCodeSession = (c) ->
+    if c.sessions[AUTHCODE_SHA2]? and c.sessions[AUTHCODE_SHA2].seedHex? then return
+    try
+        session = {}
+        if c.allowImplicitSessions
+            session.seedHex = await generateImplicitAuthCodeSeed(c)
+        else
+            timestamp = await startSessionExplicitly("authCodeSHA2", c)
+            session.seedHex = await generateExplicitAuthCodeSeed(timestamp, c)
+        c.sessions[AUTHCODE_SHA2] = session
+    catch err
+        message = "Could not establish a simple Token session! Details: #{err.message}"
+        throw new Error(message)
+    return
 
 
 #endregion
@@ -332,6 +400,10 @@ authenticateServiceStatement = (response, ourRequestId, ourServerId) ->
         validatableStamp.assertValidity(timestamp)
         
     catch err then throw new ResponseAuthError(err.message)
+    return
+
+authenticateServiceAuthCodeSHA2 = (response, ourRequestId, ourServerId) ->
+    throw new Error("Not implemented yet!")
     return
 
 #endregion

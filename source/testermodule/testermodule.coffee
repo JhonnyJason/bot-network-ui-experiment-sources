@@ -85,4 +85,10 @@ runTests = (client) ->
         olog response
     catch err then log err
 
+    try
+        response = await client.testAuthCodeSHA2Auth("testAuthCodeSHA2Auth 0")
+        olog response
+    catch err then log err
+
+
     return
