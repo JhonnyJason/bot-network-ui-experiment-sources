@@ -11,7 +11,7 @@ import * as validatableStamp from "validatabletimestamp"
 # import * as tbut from "thingy-byte-utils"
 import * as sess from "thingy-session-utils"
 
-import { 
+import {
     NOT_AUTHORIZED, NetworkError, ResponseAuthError, RPCError 
 } from "./rpcerrors.js"
 
