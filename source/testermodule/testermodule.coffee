@@ -141,12 +141,12 @@ runTests = ->
     payloadSize = "small"
     payloadLoad = payloads.smallPayload
 
-    # await runNoneAuthTests(10)
-    # await runAnonymousTests(10)
-    # await runPublicAcessTests(10)
-    # await runSignatureTests(10)
-    # await runTokenSimpleTests(10)
-    # await runAuthCodeSHA2Tests(10)
+    await runNoneAuthTests(10)
+    await runAnonymousTests(10)
+    await runPublicAcessTests(10)
+    await runSignatureTests(10)
+    await runTokenSimpleTests(10)
+    await runAuthCodeSHA2Tests(10)
     return
 
     await runNoneAuthTests(100)

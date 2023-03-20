@@ -8,7 +8,7 @@ import { createLogFunctions } from "thingy-debug"
 # import { createClient as createRPCClient } from "./rpcclientmodule.js"
 # import { createClient as createAuthClient } from "./authclientmodule.js"
 # import { createClient as createObserverClient } from "./observerclientmodule.js"
-import { MasterClient } from "./rpcmasterclient.js"
+import { RPCAuthMasterClient } from "thingy-rpc-authmaster-client"
 import * as state from "./statemodule.js"
 import { info, error } from "./messageboxmodule.js"
 import * as cryptoUtl from "secret-manager-crypto-utils"
@@ -46,7 +46,7 @@ export initialize = ->
     # options = { serverURL, secretKeyHex }
     options = { serverURL, serverId,  secretKeyHex, publicKeyHex }
     
-    masterClient = new MasterClient(options)
+    masterClient = new RPCAuthMasterClient(options)
     return
 
 ############################################################

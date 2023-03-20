@@ -11,7 +11,7 @@ import { createLogFunctions } from "thingy-debug"
 # import * as sess from "thingy-session-utils"
 # import * as validatableStamp from "validatabletimestamp"
 
-import { RPCPostClient } from "./rpcpostclient.js"
+import { RPCPostClient } from "thingy-post-rpc-client"
 
 #endregion
 
