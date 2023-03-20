@@ -25,7 +25,7 @@ export class MasterClient extends RPCPostClient
     removeClient: (clientPublicKey) ->
         authType = "masterSignature" 
         args = { clientPublicKey }
-        func = "removeClient"
+        func = "removeClientToServe"
         return @doRPC(func, args, authType)
 
     getClients: ->

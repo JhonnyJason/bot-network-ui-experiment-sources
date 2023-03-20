@@ -32,11 +32,12 @@ export initialize = ->
     publicKeyHex = state.get("publicKeyHex")
     serverURL = "https://localhost:6969/thingy-post-rpc"
     serverId = "194202ec1cea1cad68af7034803ca53e1687a5170e3b29bdf6fae432003c4927"
+    implicitSessions = true
     # options = { serverURL, secretKeyHex }
-    options = { serverURL, serverId,  secretKeyHex, publicKeyHex }
+    options = { serverURL, serverId,  secretKeyHex, publicKeyHex, implicitSessions }
     
     rpcPostClient = new TestClient(options)
-    # runTests()
+    runTests()
     return
 
 
@@ -140,13 +141,21 @@ runTests = ->
     payloadSize = "small"
     payloadLoad = payloads.smallPayload
 
+    # await runNoneAuthTests(10)
+    # await runAnonymousTests(10)
+    # await runPublicAcessTests(10)
+    # await runSignatureTests(10)
+    # await runTokenSimpleTests(10)
+    # await runAuthCodeSHA2Tests(10)
+    return
+
     await runNoneAuthTests(100)
     await runAnonymousTests(100)
     await runPublicAcessTests(100)
     await runSignatureTests(100)
     await runTokenSimpleTests(100)
     await runAuthCodeSHA2Tests(100)
-
+    
     await runNoneAuthTests(500)
     await runAnonymousTests(500)
     await runPublicAcessTests(500)
