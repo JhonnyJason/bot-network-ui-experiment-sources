@@ -141,17 +141,12 @@ runTests = ->
     payloadSize = "small"
     payloadLoad = payloads.smallPayload
 
-    response = await rpcPostClient.testSignatureAuth(payloadLoad)
-    response = await rpcPostClient.testMasterSignatureAuth(payloadLoad)
-    response = await rpcPostClient.testClientSignatureAuth(payloadLoad)
-    return
-    # await runNoneAuthTests(10)
-    # await runAnonymousTests(10)
-    # await runPublicAcessTests(10)
-    await runSignatureTests(1)
-    await runTokenSimpleTests(1)
-    await runAuthCodeSHA2Tests(1)
-    await runSignatureTests(1)
+    await runNoneAuthTests(10)
+    await runAnonymousTests(10)
+    await runPublicAcessTests(10)
+    await runSignatureTests(10)
+    await runTokenSimpleTests(10)
+    await runAuthCodeSHA2Tests(10)
     return
 
     await runNoneAuthTests(100)
