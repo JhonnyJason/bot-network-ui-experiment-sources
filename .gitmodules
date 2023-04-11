@@ -25,9 +25,6 @@
 [submodule "source/accountsettingsmodule"]
 	path = source/accountsettingsmodule
 	url = git@github.com:JhonnyJason/bot-network-ui-experiment-sources-accountsettingsmodule.git
-[submodule "source/authclientmodule"]
-	path = source/authclientmodule
-	url = git@github.com:JhonnyJason/thingy-sources-authclientmodule.git
 [submodule "source/preloadermodule"]
 	path = source/preloadermodule
 	url = git@github.com:JhonnyJason/pwa-sources-preloadermodule.git
