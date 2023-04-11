@@ -42,7 +42,7 @@ export initialize = ->
 
     publicKeyHex = state.get("publicKeyHex")
     serverURL = "https://localhost:6969/thingy-post-rpc"
-    serverId = "194202ec1cea1cad68af7034803ca53e1687a5170e3b29bdf6fae432003c4927"
+    serverId = "a8d9607f6cc919af3df3850084f63c9536efea790b3f80f514717d2a3a0159e6"
     # options = { serverURL, secretKeyHex }
     options = { serverURL, serverId,  secretKeyHex, publicKeyHex }
     

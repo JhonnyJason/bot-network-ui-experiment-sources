@@ -8,9 +8,9 @@ module.exports = {
             "qr-scanner": "^1.4.2",
             "thingy-network-base": "^0.0.4",
             "thingy-byte-utils": "^0.0.8",
-            "thingy-post-rpc-client": "^0.0.1",
+            "thingy-post-rpc-client": "^0.0.2",
             "thingy-rpc-authmaster-client": "^0.0.3",
-            "thingy-session-utils": "^0.0.3",
+            "thingy-session-utils": "^0.0.5",
             "validatabletimestamp": "^0.0.1"
         }
     }

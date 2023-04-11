@@ -31,7 +31,7 @@ export initialize = ->
         secretKeyHex = keyPairHex.secretKeyHex
     publicKeyHex = state.get("publicKeyHex")
     serverURL = "https://localhost:6969/thingy-post-rpc"
-    serverId = "194202ec1cea1cad68af7034803ca53e1687a5170e3b29bdf6fae432003c4927"
+    serverId = "a8d9607f6cc919af3df3850084f63c9536efea790b3f80f514717d2a3a0159e6"
     implicitSessions = true
     # options = { serverURL, secretKeyHex }
     options = { serverURL, serverId,  secretKeyHex, publicKeyHex, implicitSessions }
@@ -89,7 +89,7 @@ runPublicAcessTests = (count) ->
 
 runSignatureTests = (count) ->
     resultKey = "Signaturex#{count} - #{payloadSize}"
-    try    
+    try
         before = performance.now()
 
         while(count--)
@@ -141,12 +141,17 @@ runTests = ->
     payloadSize = "small"
     payloadLoad = payloads.smallPayload
 
-    await runNoneAuthTests(10)
-    await runAnonymousTests(10)
-    await runPublicAcessTests(10)
-    await runSignatureTests(10)
-    await runTokenSimpleTests(10)
-    await runAuthCodeSHA2Tests(10)
+    response = await rpcPostClient.testSignatureAuth(payloadLoad)
+    response = await rpcPostClient.testMasterSignatureAuth(payloadLoad)
+    response = await rpcPostClient.testClientSignatureAuth(payloadLoad)
+    return
+    # await runNoneAuthTests(10)
+    # await runAnonymousTests(10)
+    # await runPublicAcessTests(10)
+    await runSignatureTests(1)
+    await runTokenSimpleTests(1)
+    await runAuthCodeSHA2Tests(1)
+    await runSignatureTests(1)
     return
 
     await runNoneAuthTests(100)

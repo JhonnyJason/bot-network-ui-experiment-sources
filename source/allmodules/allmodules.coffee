@@ -1,5 +1,4 @@
 import * as accountsettingsmodule from "./accountsettingsmodule.js"
-import * as authclientmodule from "./authclientmodule.js"
 import * as backendsettingsmodule from "./backendsettingsmodule.js"
 import * as configmodule from "./configmodule.js"
 import * as contentmodule from "./contentmodule.js"
@@ -9,7 +8,6 @@ import * as messageboxmodule from "./messageboxmodule.js"
 import * as observerclientmodule from "./observerclientmodule.js"
 import * as qrdisplaymodule from "./qrdisplaymodule.js"
 import * as qrreadermodule from "./qrreadermodule.js"
-import * as rpcclientmodule from "./rpcclientmodule.js"
 import * as secretmanagersettingsmodule from "./secretmanagersettingsmodule.js"
 import * as settingsmodule from "./settingsmodule.js"
 import * as statemodule from "./statemodule.js"
@@ -19,7 +17,6 @@ import * as websocketmodule from "./websocketmodule.js"
 
 Modules = {
     accountsettingsmodule,
-    authclientmodule,
     backendsettingsmodule,
     configmodule,
     contentmodule,
@@ -29,7 +26,6 @@ Modules = {
     observerclientmodule,
     qrdisplaymodule,
     qrreadermodule,
-    rpcclientmodule,
     secretmanagersettingsmodule,
     settingsmodule,
     statemodule,

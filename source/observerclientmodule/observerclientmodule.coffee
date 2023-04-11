@@ -7,14 +7,14 @@ import { createLogFunctions } from "thingy-debug"
 
 ############################################################
 import * as tbut from "thingy-byte-utils"
-import  { Client}  from "./observerclient.js"
+# import  { Client}  from "./observerclient.js"
 
 ############################################################
 export createClient = (o) ->
     log "createClient"
     olog o
     ## TODO add some sophistication
-    return new Client(o.serverURL, o.secretKeyHex)
+    # return new Client(o.serverURL, o.secretKeyHex)
 
 ############################################################
 ensure32BytesHex = (key) ->

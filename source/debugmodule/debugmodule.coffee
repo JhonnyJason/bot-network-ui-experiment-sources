@@ -4,7 +4,6 @@ import { addModulesToDebug } from "thingy-debug"
 export modulesToDebug = {
 
     # accountsettingsmodule: true
-    authclient: true
     # authclientmodule: true
     # authenticationinterface: true
     # configmodule: true
@@ -15,8 +14,6 @@ export modulesToDebug = {
     # observerinterface: true
     # qrdisplaymodule: true
     # qrreadermodule: true
-    # rpcclient: true
-    rpcpostclient: true
     rpctestclient: true
     # secretmanagementinterface: true
     # settingsmodule: true
