@@ -15,7 +15,7 @@ krakenObserverSocket = null
 export initialize = ->
     log "initialize"
     ## TODO handle chosen URLs
-    serverURL = "wss://localhost:6969/thingy-rpc-socket"
+    serverURL = "wss://localhost:6969/thingy-ws-rpc"
     socketName = "krakenObserverSocket"
 
     # krakenObserverSocket = new ThingySocket(serverURL, socketName)

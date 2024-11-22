@@ -3,11 +3,6 @@ indexdomconnect = {name: "indexdomconnect"}
 ############################################################
 indexdomconnect.initialize = () ->
     global.content = document.getElementById("content")
-    global.clientIdInput = document.getElementById("client-id-input")
-    global.addClientButton = document.getElementById("add-client-button")
-    global.removeClientButton = document.getElementById("remove-client-button")
-    global.getClientsButton = document.getElementById("get-clients-button")
-    global.clientsToServeList = document.getElementById("clients-to-serve-list")
     global.latestOrdersButton = document.getElementById("latest-orders-button")
     global.latestTickersButton = document.getElementById("latest-tickers-button")
     global.latestBalancesButton = document.getElementById("latest-balances-button")

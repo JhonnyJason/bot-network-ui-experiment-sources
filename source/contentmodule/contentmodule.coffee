@@ -34,7 +34,7 @@ export initialize = ->
     ## TODO remove this code - just for testing
     ## Client Setup
     secretKeyHex = state.get("secretKeyHex")
-    if !secretKeyHex? 
+    if !secretKeyHex?
         keyPairHex = await cryptoUtl.createKeyPairHex()
         state.save("secretKeyHex", keyPairHex.secretKeyHex)
         state.save("publicKeyHex", keyPairHex.publicKeyHex)
@@ -42,8 +42,9 @@ export initialize = ->
 
     publicKeyHex = state.get("publicKeyHex")
     serverURL = "https://localhost:6969/thingy-post-rpc"
-    serverId = "a8d9607f6cc919af3df3850084f63c9536efea790b3f80f514717d2a3a0159e6"
+    # serverId = "a8d9607f6cc919af3df3850084f63c9536efea790b3f80f514717d2a3a0159e6"
     # options = { serverURL, secretKeyHex }
+    serverId = null
     options = { serverURL, serverId,  secretKeyHex, publicKeyHex }
     
     masterClient = new RPCAuthMasterClient(options)
@@ -57,7 +58,7 @@ addClientButtonClicked = (evnt) ->
         reply = await masterClient.addClient(clientId)
         olog {reply}
         info("ADD appearently successful!")
-    catch err 
+    catch err
         m = "Error on trying to add a new client: #{err.message}"
         log(m)
         error(m)
@@ -136,3 +137,19 @@ latestBalancesButtonClicked = (evnt) ->
         error(m)
     return
 
+
+############################################################
+export setToNoKeyState = ->
+    log "setToNoKeyState"
+    content.className = "no-key"
+    return
+
+export setToGlobalOverviewState = ->
+    log "setToGlobalOverviewState"
+    content.className = "global-overview"
+    return
+
+export setToStrategyOverviewState = (ctx) ->
+    log "setToStrategyOverviewState"
+    ##TODO 
+    return

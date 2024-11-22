@@ -23,19 +23,21 @@ export initialize = ->
     log "initialize"
 
     ## Client Setup
-    secretKeyHex = state.get("secretKeyHex")
-    if !secretKeyHex? 
+    secretKeyHex = state.load("secretKeyHex")
+    if !secretKeyHex?
         keyPairHex = await cryptoUtl.createKeyPairHex()
         state.save("secretKeyHex", keyPairHex.secretKeyHex)
         state.save("publicKeyHex", keyPairHex.publicKeyHex)
         secretKeyHex = keyPairHex.secretKeyHex
-    publicKeyHex = state.get("publicKeyHex")
+
+    publicKeyHex = state.load("publicKeyHex")
     serverURL = "https://localhost:6969/thingy-post-rpc"
     serverId = "a8d9607f6cc919af3df3850084f63c9536efea790b3f80f514717d2a3a0159e6"
-    implicitSessions = true
     # options = { serverURL, secretKeyHex }
-    options = { serverURL, serverId,  secretKeyHex, publicKeyHex, implicitSessions }
+    options = { serverURL, serverId,  secretKeyHex, publicKeyHex }
     
+    olog options
+
     rpcPostClient = new TestClient(options)
     runTests()
     return
@@ -44,7 +46,7 @@ export initialize = ->
 ############################################################
 runNoneAuthTests = (count) ->
     resultKey = "NoneAuthx#{count} - #{payloadSize}"
-    try    
+    try
         before = performance.now()
 
         while(count--)
@@ -59,7 +61,7 @@ runNoneAuthTests = (count) ->
 
 runAnonymousTests = (count) ->
     resultKey = "Anonymousx#{count} - #{payloadSize}"
-    try    
+    try
         before = performance.now()
 
         while(count--)
@@ -74,7 +76,7 @@ runAnonymousTests = (count) ->
 
 runPublicAcessTests = (count) ->
     resultKey = "PublicAccessx#{count} - #{payloadSize}"
-    try    
+    try
         before = performance.now()
 
         while(count--)
@@ -105,7 +107,7 @@ runSignatureTests = (count) ->
 ############################################################
 runTokenSimpleTests = (count) ->
     resultKey = "TokenSimplex#{count} - #{payloadSize}"
-    try    
+    try
         before = performance.now()
 
         while(count--)
@@ -121,7 +123,7 @@ runTokenSimpleTests = (count) ->
 ############################################################
 runAuthCodeSHA2Tests = (count) ->
     resultKey = "AuthCodeSHA2x#{count} - #{payloadSize}"
-    try    
+    try
         before = performance.now()
 
         while(count--)
@@ -147,6 +149,7 @@ runTests = ->
     await runSignatureTests(10)
     await runTokenSimpleTests(10)
     await runAuthCodeSHA2Tests(10)
+    olog results
     return
 
     await runNoneAuthTests(100)
