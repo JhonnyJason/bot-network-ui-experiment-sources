@@ -6,6 +6,7 @@ import * as configmodule from "./configmodule.js"
 import * as contentmodule from "./contentmodule.js"
 import * as datamanagersettingsmodule from "./datamanagersettingsmodule.js"
 import * as debugmodule from "./debugmodule.js"
+import * as functiontestermodule from "./functiontestermodule.js"
 import * as localkeymodule from "./localkeymodule.js"
 import * as messageboxmodule from "./messageboxmodule.js"
 import * as observerclientmodule from "./observerclientmodule.js"
@@ -28,6 +29,7 @@ Modules = {
     contentmodule,
     datamanagersettingsmodule,
     debugmodule,
+    functiontestermodule,
     localkeymodule,
     messageboxmodule,
     observerclientmodule,
