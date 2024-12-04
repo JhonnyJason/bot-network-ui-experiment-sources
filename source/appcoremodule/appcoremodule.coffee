@@ -29,7 +29,6 @@ menuVersion = document.getElementById("menu-version")
 appBaseState = "no-key"
 appUIMod = "none"
 
-
 ############################################################
 export initialize = ->
     log "initialize"
@@ -70,14 +69,12 @@ updateNavState = (navState) ->
 #region internal Functions
 setUIState = (base, mod, ctx) ->
     log "setUIState"
-    
+    olog {base, mod, ctx}
+
     ## If we are in RootState we might have a key so we have 2 overlapping initial states
     if base == "RootState" 
         if localKey.isSet() then base = "global-overview"
         else base = "no-key"
-        ## no modifiers are possible
-        mod = "none"
-
 
     setAppState(base, mod, ctx)
 
@@ -101,11 +98,13 @@ updateUIData = ->
 ############################################################
 setAppState = (base, mod, ctx) ->
     log "setAppState"
+    olog {base, mod, ctx}
+
     if base then appBaseState = base
     if mod then appUIMod = mod
-    log "#{appBaseState}:#{appUIMod}"
-    olog ctx
-
+    
+    log "Going to apply UI State: #{appBaseState}:#{appUIMod}"
+    
     uiState.applyUIState(appBaseState, appUIMod, ctx)
     return
     

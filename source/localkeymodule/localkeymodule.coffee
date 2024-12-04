@@ -44,15 +44,15 @@ allAuthMasterClients = new Map()
 ############################################################
 export initialize = ->
     log "initialize"
-    floatingSecretInput.addEventListener("change", floatingSecretChanged)
-    floatingSecretInput.addEventListener("keyup", floatingSecretKeyUpped)
-    # floatingSecretInput.addEventListener("keydown", floatingSecretKeyDowned)
-    aliasInput.addEventListener("change", aliasChanged)
-    aliasInput.addEventListener("keyup", aliasKeyUpped)
-    aliasInput.addEventListener("keydown", aliasKeyDowned)
+    # floatingSecretInput.addEventListener("change", floatingSecretChanged)
+    # floatingSecretInput.addEventListener("keyup", floatingSecretKeyUpped)
+    # # floatingSecretInput.addEventListener("keydown", floatingSecretKeyDowned)
+    # aliasInput.addEventListener("change", aliasChanged)
+    # aliasInput.addEventListener("keyup", aliasKeyUpped)
+    # aliasInput.addEventListener("keydown", aliasKeyDowned)
 
-    acceptUseButton.addEventListener("click", acceptButtonClicked)
-    masterkeydisplay.addEventListener("click", keyDisplayClicked)
+    # acceptUseButton.addEventListener("click", acceptButtonClicked)
+    # masterkeydisplay.addEventListener("click", keyDisplayClicked)
     return
 
 ############################################################

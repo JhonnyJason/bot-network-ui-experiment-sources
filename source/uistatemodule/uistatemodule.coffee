@@ -7,6 +7,7 @@ import { createLogFunctions } from "thingy-debug"
 ############################################################
 #region imported UI modules
 import * as content from "./contentmodule.js"
+import * as settings from "./settingsmodule.js"
 
 ## User Modals
 
@@ -25,18 +26,39 @@ currentContext = null
 #region Base State Application Functions
 
 applyBaseState["no-key"] = (ctx) ->
+    settings.switchSettingsOff()
     content.setToNoKeyState(ctx)
     # masterKey.focusFloatingSecretInput()
     return
 
+
+############################################################
+# States on App Usage
 applyBaseState["global-overview"] = (ctx) ->
+    settings.switchSettingsOff()
     content.setToGlobalOverviewState(ctx)
     # servers.display(ctx)
     return
 
 applyBaseState["strategy-overview"] = (ctx) ->
+    settings.switchSettingsOff()
     content.setToStrategyOverviewState(ctx)
     # servers.setEditData(ctx)
+    return
+
+
+############################################################
+# States on Settings
+applyBaseState["settings"] = (ctx) ->
+    settings.switchSettingsOn()
+    return
+
+applyBaseState["settings-account"] = (ctx) ->
+    settings.switchSettingsOn("account")
+    return
+
+applyBaseState["settings-backend"] = (ctx) ->
+    settings.switchSettingsOn("backend")
     return
 
 #endregion
@@ -51,6 +73,11 @@ resetAllModifications = ->
 
 applyModifier["none"] = (ctx) ->
     resetAllModifications()
+    return
+
+applyModifier["settings"] = (ctx) ->
+    resetAllModifications()
+    settings.switchSettingsOn()
     return
 
 applyModifier["delete-confirmation"] = (ctx) ->

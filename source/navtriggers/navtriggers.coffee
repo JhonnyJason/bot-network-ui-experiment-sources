@@ -26,7 +26,13 @@ export back = ->
     return nav.back(1)
     
 ############################################################
-export menu = (menuOn) ->
-    if menuOn then return nav.toMod("menu")
-    else return nav.toMod("none")
- 
+export settingsOn = ->
+    return nav.toBase("settings")
+
+############################################################
+export settingsAccount = ->
+    return nav.toBase("settings-account")
+
+############################################################
+export settingsBackend = ->
+    return nav.toBase("settings-backend")

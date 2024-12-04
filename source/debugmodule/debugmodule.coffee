@@ -3,6 +3,7 @@ import { addModulesToDebug } from "thingy-debug"
 ############################################################
 export modulesToDebug = {
 
+    appcoremodule: true
     # accountsettingsmodule: true
     # authclientmodule: true
     # authenticationinterface: true
@@ -14,11 +15,11 @@ export modulesToDebug = {
     # observerinterface: true
     # qrdisplaymodule: true
     # qrreadermodule: true
-    rpctestclient: true
+    # rpctestclient: true
     # secretmanagementinterface: true
-    # settingsmodule: true
+    settingsmodule: true
     # statemodule: true
-    testermodule: true
+    # testermodule: true
     # websocketmodule: true
     
 }

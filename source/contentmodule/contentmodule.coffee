@@ -12,6 +12,19 @@ import { RPCAuthMasterClient } from "thingy-rpc-authmaster-client"
 import * as state from "./statemodule.js"
 import { info, error } from "./messageboxmodule.js"
 import * as cryptoUtl from "secret-manager-crypto-utils"
+import * as triggers from "./navtriggers.js"
+
+
+#############################################################
+export initialize = ->
+    tutorialConfigureKeyButton.addEventListener("click", configureKeyClicked)
+    return
+
+#############################################################
+configureKeyClicked = ->
+    log "configureKeyClicked" 
+    triggers.settingsAccount()
+    return
 
 ############################################################
 export setToNoKeyState = ->

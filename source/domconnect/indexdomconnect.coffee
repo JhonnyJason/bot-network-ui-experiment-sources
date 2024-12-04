@@ -7,6 +7,7 @@ indexdomconnect.initialize = () ->
     global.latestTickersButton = document.getElementById("latest-tickers-button")
     global.latestBalancesButton = document.getElementById("latest-balances-button")
     global.displayRegularOperationsResponseContainer = document.getElementById("display-regular-operations-response-container")
+    global.tutorialConfigureKeyButton = document.getElementById("tutorial-configure-key-button")
     global.settingsButton = document.getElementById("settings-button")
     global.settingsoffButton = document.getElementById("settingsoff-button")
     global.secretmanagerOptions = document.getElementById("secretmanager-options")
