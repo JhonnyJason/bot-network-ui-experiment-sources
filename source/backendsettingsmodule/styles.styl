@@ -1,4 +1,4 @@
-#signalling-server-input
+#backend-server-input
     width 100%
     padding 7px
     box-sizing: border-box
@@ -7,30 +7,31 @@
     text-overflow: ellipsis
     border solid 3px rgb(69, 212, 69)
 
-#signalling-server-input:focus
+#backend-server-input:focus
     width 100%
     background-color white
 
-#signalling-server-works-indicator
+#backend-server-works-indicator
     color rgb(69, 212, 69)
     text-align left
     margin-top 10px
     margin-bottom 30px
 
 
-#signalling-server-button-container
-    display: flex
-    justify-content: space-between
-    margin-bottom 30px
-
+#backend-server-button-container
+    display: grid
+    gap 30px
+    grid-template-columns: 1fr 1fr
+    margin-bottom: 40px
+    
     .click-button
-        background-color grey
+        background-color cd-flash
         font-weight bold
-        min-width 120px
+        min-width 80px
         padding 10px
         border-radius: 3px
 
 
 
-#signalling-server-explaination-text
+#backend-server-explaination-text
     text-align: left

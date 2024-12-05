@@ -19,7 +19,7 @@ import * as triggers from "./navtriggers.js"
 #region internal variables
 
 cryptoNode = null
-context = "Auth Master UI" 
+context = "Asset Flow Control UI" 
 
 ############################################################
 masterKey = ""
