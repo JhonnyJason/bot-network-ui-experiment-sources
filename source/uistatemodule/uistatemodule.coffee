@@ -10,6 +10,8 @@ import * as content from "./contentmodule.js"
 import * as settings from "./settingsmodule.js"
 
 ## User Modals
+############################################################
+import * as deleteConfirmation from "./deleteconfirmation.js"
 
 #endregion
 
@@ -65,7 +67,7 @@ applyBaseState["settings-backend"] = (ctx) ->
 
 ############################################################
 resetAllModifications = ->
-    # deleteConfirmation.turnDownModal("uiState changed")
+    deleteConfirmation.turnDownModal("uiState changed")
     return
 
 ############################################################
@@ -75,14 +77,9 @@ applyModifier["none"] = (ctx) ->
     resetAllModifications()
     return
 
-applyModifier["settings"] = (ctx) ->
+applyModifier["deleteconfirmation"] = (ctx) ->
     resetAllModifications()
-    settings.switchSettingsOn()
-    return
-
-applyModifier["delete-confirmation"] = (ctx) ->
-    resetAllModifications()
-    # deleteConfirmation.turnUpModal(ctx)
+    deleteConfirmation.turnUpModal(ctx)
     return
 
 

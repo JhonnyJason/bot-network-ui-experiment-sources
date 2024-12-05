@@ -10,6 +10,7 @@ indexdomconnect.initialize = () ->
     global.tutorialConfigureKeyButton = document.getElementById("tutorial-configure-key-button")
     global.settingsButton = document.getElementById("settings-button")
     global.settingsoffButton = document.getElementById("settingsoff-button")
+    global.deleteconfirmation = document.getElementById("deleteconfirmation")
     global.secretmanagerOptions = document.getElementById("secretmanager-options")
     global.accountsettings = document.getElementById("accountsettings")
     global.idDisplay = document.getElementById("id-display")

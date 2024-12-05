@@ -9,6 +9,7 @@ export modulesToDebug = {
     # authenticationinterface: true
     # configmodule: true
     # contentmodule: true
+    keygeneration: true
     # messageboxmodule: true
     # observerclientmodule: true
     # observerclient: true

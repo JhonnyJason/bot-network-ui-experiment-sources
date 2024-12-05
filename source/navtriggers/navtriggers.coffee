@@ -36,3 +36,8 @@ export settingsAccount = ->
 ############################################################
 export settingsBackend = ->
     return nav.toBase("settings-backend")
+
+
+############################################################
+export deleteKey =  ->
+    return nav.toMod("deleteconfirmation")

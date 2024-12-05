@@ -17,6 +17,7 @@ import * as settingsmodule from "./settingsmodule.js"
 import * as statemodule from "./statemodule.js"
 import * as testermodule from "./testermodule.js"
 import * as uistatemodule from "./uistatemodule.js"
+import * as usermodalmodule from "./usermodalmodule.js"
 import * as utilsmodule from "./utilsmodule.js"
 import * as websocketmodule from "./websocketmodule.js"
 
@@ -40,6 +41,7 @@ Modules = {
     statemodule,
     testermodule,
     uistatemodule,
+    usermodalmodule,
     utilsmodule,
     websocketmodule,
 }

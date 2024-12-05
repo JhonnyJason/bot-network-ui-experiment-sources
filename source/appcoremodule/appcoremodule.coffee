@@ -11,8 +11,15 @@ import * as S from "./statemodule.js"
 ############################################################
 import * as uiState from "./uistatemodule.js"
 import * as triggers from "./navtriggers.js"
-import * as localKey from "./localkeymodule.js"
+import * as account from "./accountsettingsmodule.js"
 
+############################################################
+import * as deleteConfirmation from "./deleteconfirmation.js"
+import * as keyGeneration from "./keygeneration.js"
+import * as keyImport from "./keyimport.js"
+import * as keyExport from "./keyexport.js"
+
+############################################################
 import { appVersion } from "./configmodule.js"
 
 ############################################################
@@ -49,7 +56,7 @@ export initialize = ->
 loadWithNavState = (navState) ->
     log "loadWithNavState"
     olog navState
-    if !localKey.isSet() and navState.depth != 0 then return triggers.reset()
+    if !account.hasKey() and navState.depth != 0 then return triggers.reset()
     else updateNavState(navState)
     return
 
@@ -73,7 +80,7 @@ setUIState = (base, mod, ctx) ->
 
     ## If we are in RootState we might have a key so we have 2 overlapping initial states
     if base == "RootState" 
-        if localKey.isSet() then base = "global-overview"
+        if account.hasKey() then base = "global-overview"
         else base = "no-key"
 
     setAppState(base, mod, ctx)
@@ -83,7 +90,12 @@ setUIState = (base, mod, ctx) ->
     ## setAppState sets the uistate and might reset any state involved with the userinteraction - uistate is responsible to make the appropriate parts visible
     ## Thus the appcore sets the state according to the state involved with the userinteraction as any further action of the App depends on it
 
-    if mod == "delete-confirmation" then deleteConfirmationProcess(ctx)
+    switch mod
+        when "deleteconfirmation" then deleteConfirmationProcess()
+        when "keygeneration" then keyGenerationProcess()
+        when "keyimport" then keyImportProcess()
+        when "keyexport" then keyExportProcess()
+
     return
 
 ############################################################
@@ -132,24 +144,12 @@ onServiceWorkerSwitch = ->
 deleteConfirmationProcess = (ctx) ->
     log "deleteConfirmationProcess"
     try
-        if !ctx.index? then throw new Error("called deleteConfirmationProcess without server index to delete")
-
         await deleteConfirmation.userConfirmation()
         log "user confirmed!"
-        await servers.deleteServer(ctx.index)
-        log "server deleted!"
+        account.deleteAccount()
+        log "account deleted!"
     catch err then log err
-    finally triggers.mainView()
-    return
-
-urlCodeDetectedProcess = ->
-    log "urlCodeDetectedProcess"
-    log "urlCode is: #{urlCode}"
-    try
-        credentials = await verificationModal.pickUpConfirmedCredentials(urlCode)
-        await account.addValidAccount(credentials)
-    catch err then log err
-    finally nav.toRoot(true)
+    finally nav.toMod("none")    
     return
 
 #endregion
