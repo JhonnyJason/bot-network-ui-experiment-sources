@@ -8,6 +8,8 @@ import { createLogFunctions } from "thingy-debug"
 #region imported UI modules
 import * as content from "./contentmodule.js"
 import * as settings from "./settingsmodule.js"
+import * as accountSettings from "./accountsettingsmodule.js"
+import * as input from "./inputmodule.js"
 
 ## User Modals
 ############################################################
@@ -29,7 +31,7 @@ currentContext = null
 
 applyBaseState["no-key"] = (ctx) ->
     settings.switchSettingsOff()
-    content.setToNoKeyState(ctx)
+    content.setToTutorialState(ctx)
     # masterKey.focusFloatingSecretInput()
     return
 
@@ -53,21 +55,41 @@ applyBaseState["strategy-overview"] = (ctx) ->
 # States on Settings
 applyBaseState["settings"] = (ctx) ->
     settings.switchSettingsOn()
+    accountSettings.setOff()
     return
 
 applyBaseState["settings-account"] = (ctx) ->
     settings.switchSettingsOn("account")
+    accountSettings.setOff()
     return
 
 applyBaseState["settings-backend"] = (ctx) ->
     settings.switchSettingsOn("backend")
+    accountSettings.setOff()
     return
+
+applyBaseState["settings-account-keygeneration"] = (ctx) ->
+    settings.switchSettingsOn("account")
+    accountSettings.setToKeyGeneration()
+    return
+
+applyBaseState["settings-account-keyimport"] = (ctx) ->
+    settings.switchSettingsOn("account")
+    accountSettings.setToKeyImport()
+    return
+
+applyBaseState["settings-account-keyexport"] = (ctx) ->
+    settings.switchSettingsOn("account")
+    accountSettings.setToKeyExport()
+    return
+
 
 #endregion
 
 ############################################################
 resetAllModifications = ->
     deleteConfirmation.turnDownModal("uiState changed")
+    input.reset()
     return
 
 ############################################################
@@ -82,6 +104,15 @@ applyModifier["deleteconfirmation"] = (ctx) ->
     deleteConfirmation.turnUpModal(ctx)
     return
 
+applyModifier["phraseinput"] = () ->
+    resetAllModifications()
+    input.retrievePhrase()
+    return
+
+applyModifier["qrinput"] = () ->
+    resetAllModifications()
+    input.retrieveQrCode()
+    return
 
 #endregion
 

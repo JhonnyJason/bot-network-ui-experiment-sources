@@ -37,3 +37,4 @@ export situationAnalyzerBackendOptions = [
 export defaultSituationAnalyzerBackendOption = 2
 
 ############################################################
+export cryptoContext = "Asset Flow Control UI"

@@ -5,7 +5,10 @@ import { createLogFunctions } from "thingy-debug"
 #endregion
 
 ############################################################
+import * as secUtl from "secret-manager-crypto-utils"
 import * as tbut from "thingy-byte-utils"
+
+############################################################
 import * as msgBox from "./messageboxmodule"
 
 ############################################################
@@ -19,6 +22,18 @@ export strip0x = (hex) ->
     if !hex? then throw new Error("strip0x - undefined argument!")
     return hex unless hex[0] == "0" and hex[1] == "x"
     return hex.slice(2)
+
+############################################################
+export hexXOR = (kHex, sHex) ->
+    if kHex.length != sHex.length then throw new Error("Keys must have same length!")
+    kBytes = tbut.hexToBytes(kHex)
+    sBytes = tbut.hexToBytes(sHex)
+
+    rBytes = new Uint8Array(kBytes.length)
+    rBytes[i] = kByte ^ sBytes[i] for kByte, i in kBytes
+
+    return tbut.bytesToHex(rBytes)
+
 
 ############################################################
 export seedToKey = (seed) ->

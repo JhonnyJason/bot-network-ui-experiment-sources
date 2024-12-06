@@ -33,6 +33,23 @@ export settingsOn = ->
 export settingsAccount = ->
     return nav.toBase("settings-account")
 
+export keyGeneration = ->
+    return nav.toBase("settings-account-keygeneration")
+
+export phraseProtect = ->
+    return nav.toMod("phraseinput")
+
+export qrProtect = ->
+    return nav.toMod("qrinput")
+
+export keyImport = ->
+    return nav.toBase("settings-account-keyimport")
+
+export keyExport = ->
+    return nav.toBase("settings-account-keyexport")
+
+
+
 ############################################################
 export settingsBackend = ->
     return nav.toBase("settings-backend")
@@ -41,3 +58,4 @@ export settingsBackend = ->
 ############################################################
 export deleteKey =  ->
     return nav.toMod("deleteconfirmation")
+

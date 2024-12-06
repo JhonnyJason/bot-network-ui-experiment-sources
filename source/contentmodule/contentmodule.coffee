@@ -27,9 +27,9 @@ configureKeyClicked = ->
     return
 
 ############################################################
-export setToNoKeyState = ->
-    log "setToNoKeyState"
-    content.className = "no-key"
+export setToTutorialState = ->
+    log "setToTutorialState"
+    content.className = "tutorial"
     return
 
 export setToGlobalOverviewState = ->
