@@ -10,6 +10,7 @@ import * as content from "./contentmodule.js"
 import * as settings from "./settingsmodule.js"
 import * as accountSettings from "./accountsettingsmodule.js"
 import * as input from "./inputmodule.js"
+import * as unlock from "./unlockmodule.js"
 
 ## User Modals
 ############################################################
@@ -90,6 +91,7 @@ applyBaseState["settings-account-keyexport"] = (ctx) ->
 resetAllModifications = ->
     deleteConfirmation.turnDownModal("uiState changed")
     input.reset()
+    unlock.reset()
     return
 
 ############################################################
@@ -113,6 +115,17 @@ applyModifier["qrinput"] = () ->
     resetAllModifications()
     input.retrieveQrCode()
     return
+
+applyModifier["qrunlock"] = () ->
+    resetAllModifications()
+    unlock.qrUnlock()
+    return
+
+applyModifier["phraseunlock"] = () ->
+    resetAllModifications()
+    unlock.phraseUnlock()
+    return
+
 
 #endregion
 

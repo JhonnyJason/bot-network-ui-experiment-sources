@@ -3,7 +3,8 @@ import { addModulesToDebug } from "thingy-debug"
 ############################################################
 export modulesToDebug = {
 
-    # appcoremodule: true
+    accountmodule: true
+    appcoremodule: true
     # accountsettingsmodule: true
     # authclientmodule: true
     # authenticationinterface: true

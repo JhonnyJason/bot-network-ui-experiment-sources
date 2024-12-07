@@ -49,6 +49,14 @@ export keyExport = ->
     return nav.toBase("settings-account-keyexport")
 
 
+############################################################
+export unlockWithQR = ->
+    return nav.toMod("qrunlock")
+
+
+export unlockWithPhrase = ->
+    return nav.toMod("phraseunlock")
+
 
 ############################################################
 export settingsBackend = ->

@@ -1,0 +1,96 @@
+element-background ?= #000
+element-foreground ?= #fff
+
+#phraseunlock-frame
+    position absolute
+    top 0
+    left 0
+    z-index:  299
+    height 100%
+    width 100%
+    overflow hidden
+    background-color element-background
+    display flex
+    align-items: center
+    transform translateY(-102%)
+    opacity 0
+    transition: opacity 0.3s
+    pointer-events: none
+
+    .click-catcher
+        position absolute
+        top 0
+        left 0
+        height 100%
+        width 100%
+        overflow hidden
+
+        #phraseunlock-close-button
+            position: fixed
+            top 0
+            right 0
+            width 60px
+            height 60px
+            padding 15px
+            box-sizing: border-box
+            color #000
+            svg
+                width: 30px
+                height 30px
+
+    .phraseunlock-container
+        position absolute
+        top 0
+        left 0
+        margin-top 100px
+        width 100%
+        padding 10px
+        box-sizing: border-box
+        
+        input
+            background-color #024
+            color #fff
+            text-align: center
+            padding 16px 7px
+            margin-top 16px
+            margin-bottom 30px
+            border-radius: 3px
+
+
+        .button-row
+            display grid
+            gap 20px
+            grid-template-columns: 1fr 1fr
+
+        .flashy-button
+            background-color cd-flash
+            color #fff
+            font-weight bold
+            min-width 150px
+            padding 10px
+            border-radius: 3px
+            display flex
+            align-content: center
+            justify-content: center
+            svg
+                height 15px
+                width 15px
+
+        .flashy-button.disabled
+            opacity 0.2
+            pointer-events: none
+
+#phraseunlock-frame.active
+    transform translateY(0)
+    opacity 1
+    pointer-events: all
+
+    // .click-catcher
+    // .phraseunlock-container
+    //     h2 Please provide your secret phrase:
+    //     input#phraseunlock(type="password" name="secret-phrase")
+    //     .button-row 
+    //         #accept-phrase-button.click-button.flashy-button Okay 
+    //         #cancel-phrase-button.click-button.flashy-button Cancel 
+
+

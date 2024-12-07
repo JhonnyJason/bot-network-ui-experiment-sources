@@ -11,7 +11,7 @@ import * as S from "./statemodule.js"
 ############################################################
 import * as uiState from "./uistatemodule.js"
 import * as triggers from "./navtriggers.js"
-import * as account from "./accountsettingsmodule.js"
+import * as account from "./accountmodule.js"
 
 ############################################################
 import * as deleteConfirmation from "./deleteconfirmation.js"
@@ -53,11 +53,60 @@ export initialize = ->
     return
 
 ############################################################
+alterStateOnLoad = (navState) ->
+    log "alterStateOnLoad"
+    s = navState
+    
+    ki = account.getKeyInfo()
+
+    olog ki
+
+    ## case: key exists and locked -> alter state
+    if ki.exists and ki.locked 
+        switch ki.protection 
+            when "qr" then triggers.unlockWithQR()
+            when "phrase" then triggers.unlockWithPhrase()
+            else throw new Error("Unhandeled protection value: #{ki.protection}")
+        log "Key Existed and was Protected!"
+        return true
+
+    ## case: key exists and unlocked -> all good
+    if ki.exists then return false
+
+    log "Key did not exist!"
+
+    ## case: no key + legal state -> all good
+    ## legal: RootState (depth: 0)
+    ## legal: settings (depth: 1)
+    ## legal: settings-account (depth:1 or depth: 2)
+    ## legal: settings-backend (depth: 2)
+    ## legal: settings-account-keygeneration (depth: 2 or depth: 3)
+    ## legal: settings-account-keyimport (depth: 2 or depth: 3)
+    switch s.base
+        when "RootState" then legal = (s.depth == 0)
+        when "settings" then legal = (s.depth == 1)
+        when "settings-backend" then legal = (s.depth == 2)
+        when "settings-account" then legal = (s.depth == 1 or s.depth == 2)
+        when "settings-account-keygeneration" then legal = (s.depth == 2 or s.depth == 3)
+        when "settings-account-keyimport" then legal = (s.depth == 2 or s.depth == 3)
+        else legal = false
+    
+    if legal then return false
+
+    log "We are in an illegal State!"
+
+    ## case: no key + illegal state -> alter state
+    triggers.reset()
+    return true
+
+
+############################################################
 loadWithNavState = (navState) ->
     log "loadWithNavState"
     olog navState
-    if !account.hasKey() and navState.depth != 0 then return triggers.reset()
-    else updateNavState(navState)
+    if alterStateOnLoad(navState) then return
+    
+    updateNavState(navState)
     return
 
 ############################################################
