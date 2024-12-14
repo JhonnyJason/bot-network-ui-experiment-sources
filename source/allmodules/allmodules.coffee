@@ -5,9 +5,12 @@ import * as appcoremodule from "./appcoremodule.js"
 import * as backendsettingsmodule from "./backendsettingsmodule.js"
 import * as configmodule from "./configmodule.js"
 import * as contentmodule from "./contentmodule.js"
+import * as controllermodule from "./controllermodule.js"
 import * as datamanagersettingsmodule from "./datamanagersettingsmodule.js"
+import * as datamodule from "./datamodule.js"
 import * as debugmodule from "./debugmodule.js"
-import * as functiontestermodule from "./functiontestermodule.js"
+import * as exchangemodule from "./exchangemodule.js"
+import * as globalviewmodule from "./globalviewmodule.js"
 import * as inputmodule from "./inputmodule.js"
 import * as localkeymodule from "./localkeymodule.js"
 import * as messageboxmodule from "./messageboxmodule.js"
@@ -17,6 +20,7 @@ import * as qrreadermodule from "./qrreadermodule.js"
 import * as settingsmodule from "./settingsmodule.js"
 import * as statemodule from "./statemodule.js"
 import * as testermodule from "./testermodule.js"
+import * as tutorialmodule from "./tutorialmodule.js"
 import * as uistatemodule from "./uistatemodule.js"
 import * as unlockmodule from "./unlockmodule.js"
 import * as usermodalmodule from "./usermodalmodule.js"
@@ -31,9 +35,12 @@ Modules = {
     backendsettingsmodule,
     configmodule,
     contentmodule,
+    controllermodule,
     datamanagersettingsmodule,
+    datamodule,
     debugmodule,
-    functiontestermodule,
+    exchangemodule,
+    globalviewmodule,
     inputmodule,
     localkeymodule,
     messageboxmodule,
@@ -43,6 +50,7 @@ Modules = {
     settingsmodule,
     statemodule,
     testermodule,
+    tutorialmodule,
     uistatemodule,
     unlockmodule,
     usermodalmodule,

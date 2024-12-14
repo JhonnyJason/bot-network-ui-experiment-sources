@@ -1,0 +1,53 @@
+.hidden-templates 
+    #exchange-display-entry-template-container
+        li.exchange-display-entry(index="{{{i}}}") 
+            .exchange-display-brand 
+                svg: use(href="{{{iconHref}}}")
+                .label {{{name}}} 
+            .exchange-display-evaluation 
+                .exchange-display-evaluation-number {{{currentEvaluation}}}
+                .exchange-display-evaluation-unit  {{{evaluationUnit}}}
+            .empty-cell
+            .exchange-overview-button.click-button
+                svg: use(href="#svg-chevron-right-icon")
+                .label Control
+
+#globalview-frame 
+    //- h1 Current Evaluation of Holdings 
+    #total-evaluation-display
+        #total-evaluation-number 
+        #total-evaluation-unit
+
+    #total-distribution-display
+        #total-distribution-pie
+        ul#total-distribution-assets
+
+    ul#all-exchanges-display
+
+        li.exchange-display-entry 
+            .exchange-display-brand 
+                svg: use(href="#svg-kraken-icon")
+                .label Kraken 
+            .exchange-display-evaluation 
+                .exchange-display-evaluation-number 1000.213
+                .exchange-display-evaluation-unit  €
+            .empty-cell
+            .exchange-overview-button.click-button
+                svg: use(href="#svg-chevron-right-icon")
+                .label Control
+                
+        li.exchange-display-entry 
+            .exchange-display-brand 
+                svg: use(href="#svg-binance-icon")
+                .label Binance 
+            .exchange-display-evaluation 
+                .exchange-display-evaluation-number 2000.213
+                .exchange-display-evaluation-unit  €
+            .ampty-cell
+            .exchange-overview-button.click-button
+                svg: use(href="#svg-chevron-right-icon")
+                .label Control
+
+    #add-exchange-button.click-button.flashy-button
+         svg: use(href="#svg-add-icon")
+         .label Add Exchange

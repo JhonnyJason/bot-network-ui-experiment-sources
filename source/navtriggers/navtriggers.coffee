@@ -15,7 +15,10 @@ import * as S from "./statemodule.js"
 
 ############################################################
 export mainView = ->
-    return nav.toBaseAt("global-overview", null, 1)
+    return nav.toRoot(true)
+
+export  addExchange = ->
+    return nav.toBaseAt("add-exchange", null, 1)
 
 ############################################################
 export reset = ->

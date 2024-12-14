@@ -39,9 +39,16 @@ applyBaseState["no-key"] = (ctx) ->
 
 ############################################################
 # States on App Usage
-applyBaseState["global-overview"] = (ctx) ->
+applyBaseState["global-view"] = (ctx) ->
     settings.switchSettingsOff()
     content.setToGlobalOverviewState(ctx)
+    # servers.display(ctx)
+    return
+
+
+applyBaseState["add-exchange"] = (ctx) ->
+    settings.switchSettingsOff()
+    content.setToAddExchangeState(ctx)
     # servers.display(ctx)
     return
 

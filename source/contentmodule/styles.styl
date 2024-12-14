@@ -1,36 +1,18 @@
-// content styles
-#tutorialframe
-    display none
-    color black
-    padding 30px
-
-    h1
-        margin-bottom 20px
-    p
-        margin-bottom 10px
-
-    p.wish-paragraph
-        font-size: 25pt
-        transform rotate(-5deg)
-        margin-top 40px
-        margin-left auto
-        margin-right 0
-        width: fit-content
-
-    .click-button
-        margin-bottom 40px
-        margin-top 20px
-        text-align: center
-        width fit-content
-
-    #sample-settings-icon
-        height 15px
-        width 15px
-
+/*==========================================================
+UI-State dependent styles
+==========================================================*/
 .tutorial
-    #tutorialframe
-        display block
+.global-view
+.exchange-overview
+.add-exchange
+.controller-overview
+    #apppreloader
+        display none
 
+
+/*==========================================================
+Main Content Styles
+==========================================================*/
 #content
     position absolute
     top 0
@@ -65,22 +47,22 @@
         border solid 1px #808080
         width calc(100% - 30px)
 
-// #add-remove-client-container > *
-//     margin-bottom 5px
-// #add-remove-client-container
-//     margin-bottom 50px
 
 
-// #clients-to-serve-list
-//     width calc(100% - 30px)
-//     margin-left auto
-//     margin-right auto
+/*==========================================================
+Apppreloader
+==========================================================*/
+#apppreloader
+    width: 200px
+    max-width: 30%
+    position: absolute
+    top 50%
+    left 50%
+    transform: translate(-50%,-50%)
+    color #000
 
-//     li
-//         color black
-//         margin-left 20px
-//         list-style: circle
-//         padding-top: 7px
-
-// #display-clients-container
-//     margin-bottom: 100px
+#apppreloader
+    .preloader
+        height: auto
+        width: 100%
+        aspect-ratio: 1

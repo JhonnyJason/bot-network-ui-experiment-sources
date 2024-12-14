@@ -11,6 +11,7 @@ module.exports = {
             "thingy-post-rpc-client": "^0.0.7",
             "thingy-rpc-authmaster-client": "^0.0.9",
             "thingy-session-utils": "^0.0.6",
+            "uplot": "^1.6.31",
             "validatabletimestamp": "^0.0.4"
         }
     }

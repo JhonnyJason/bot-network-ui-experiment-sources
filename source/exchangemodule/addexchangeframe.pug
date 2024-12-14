@@ -1,0 +1,22 @@
+//- exchange structure
+#addexchange-frame 
+
+    h1 Choose your Exchange to Add
+    select#exchange-select
+        option#kraken-option(value="kraken")
+            svg: use(href="#svg-kraken-icon")
+            .label Kraken
+        option#binance-option(value="binance")
+            svg: use(href="#svg-binance-icon")
+            .label Binance  
+
+    label(for="apikey-input") API (Access) Key
+    input#apikey-input(type="password" name="apikey")
+    label(for="secretkey-input") API Private/Secret Key
+    input#secretkey-input(type="password" name="apisecretkey")
+
+    #addexchange-conclusion-row 
+        #addexchange-use-button.click-button.flashy-button.disabled
+            .label Use
+        #addexchange-cancel-button.click-button.flashy-button 
+            .label Cancel

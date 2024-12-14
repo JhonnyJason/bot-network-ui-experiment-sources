@@ -1,0 +1,35 @@
+#exchangeoverview-frame 
+
+    #exchange-display 
+        svg: use(href="#svg-kraken-icon")
+        .label Kraken
+
+    #exchange-evaluation-display
+        #exchange-evaluation-number 10000.215
+        #exchange-evaluation-unit €
+
+
+    #exchange-distribution-display
+        #exchange-distribution-pie
+        ul#exchange-distribution-assets
+
+
+    ul#controller-display
+        li.controller-display-entry
+            .controller-display-label Master Controller 1
+            .controller-display-state Level 2
+            .controller-display-profit Profit: + 3.4€ | + 0.002ETH
+            .controller-overview-button.click-button
+                svg: use(href="#svg-chevron-right-icon")
+                .label Manage
+        li.controller-display-entry
+            .controller-display-label Master Controller 2
+            .controller-display-state Level 5
+            .controller-overview-button.click-button
+                svg: use(href="#svg-chevron-right-icon")
+                .label Manage
+
+
+    #add-controller-button.click-button.flashy-button
+         svg: use(href="#svg-add-icon")
+         .label Add Controller

@@ -10,7 +10,7 @@ import * as secUtl from "secret-manager-crypto-utils"
 
 ############################################################
 #region modulesFromEnvironment
-import * as state from "./statemodule.js"
+import * as S from "./statemodule.js"
 import * as utl from "./utilsmodule.js"
 import * as accountSettings from "./accountsettingsmodule.js"
 
@@ -37,27 +37,35 @@ currentKeyInfo = {
 export initialize = ->
     log "initialize"
     readKeyObject()
-    olog currentKeyObj
-    olog currentKeyInfo
-
-    createCurrentCryptoNode()
-    updateDisplay()
+    postKeyChange()
     return
 
 ############################################################
 #region internalFuntions
 
 ############################################################
+postKeyChange = ->
+    log "postKeyChange"
+    olog currentKeyObj
+
+    generateKeyInfo()    
+    olog currentKeyInfo
+
+    createCurrentCryptoNode()
+    updateDisplay()
+    S.callOutChange("account")
+    return
+
+############################################################
 #region keyReading Function
 readKeyObject = ->
     log "readKeyObject"
-    keyStoreObj = state.load("keyStoreObject")
+    keyStoreObj = S.load("keyStoreObject")
     olog keyStoreObj
 
     if !keyStoreObj? or Object.keys(keyStoreObj).length != 5
         currentCryptoNode = null
         currentKeyObj = null
-        generateKeyInfo()    
         return
 
     publicKeyHex = keyStoreObj.accountIdHex
@@ -71,13 +79,11 @@ readKeyObject = ->
     if keyTraceHex and !utl.isValidKey(keyTraceHex) then throw new Error("Read a keyTrace of invalid Format!") 
 
     currentKeyObj = { secretKeyHex, publicKeyHex, protection, keyTraceHex, keySaltHex }
-    generateKeyInfo()
     return
 
 ############################################################
 generateKeyInfo = ->
     log "generateKeyInfo"
-    olog currentKeyObj
     if !currentKeyObj?
         currentKeyInfo.exists = false
         currentKeyInfo.locked = false
@@ -137,7 +143,7 @@ storeKeyObject = ->
         keyTraceHex: currentKeyObj.keyTraceHex
     }
 
-    state.save("keyStoreObject", keyStoreObj)
+    S.save("keyStoreObject", keyStoreObj)
     return
 
 ############################################################
@@ -152,11 +158,8 @@ useUnprotectedKey = (fullKeyHandle) ->
     keySaltHex = ""
 
     currentKeyObj = { secretKeyHex, publicKeyHex, protection, keyTraceHex, keySaltHex }
-    generateKeyInfo()
-    storeKeyObject()
 
-    createCurrentCryptoNode()
-    updateDisplay()
+    postKeyChange()
     return
 
 useProtectedKey = (fullKeyHandle) ->
@@ -170,11 +173,8 @@ useProtectedKey = (fullKeyHandle) ->
     keySaltHex = fullKeyHandle.keySaltHex
 
     currentKeyObj = { secretKeyHex, publicKeyHex, protection, keyTraceHex, keySaltHex }
-    generateKeyInfo()
-    storeKeyObject()
 
-    createCurrentCryptoNode()
-    updateDisplay()
+    postKeyChange()
     return
 
 #endregion
@@ -190,12 +190,12 @@ export getKeyInfo = -> currentKeyInfo
 
 export deleteAccount = ->
     log "deleteAccount"
-    state.remove("keyStoreObject")
+    S.remove("keyStoreObject")
 
     currentCryptoNode = null
     currentKeyObj = null
-    generateKeyInfo()    
-    updateDisplay()
+
+    postKeyChange()
     return
 
 export useNewKey = (fullKeyHandle) ->
@@ -220,8 +220,7 @@ export unlockKey = (secretData) ->
         throw new Error("Error in Key Unlock!")
 
     currentKeyObj.secretKeyHex = secretKeyHex
-    generateKeyInfo()    
-    createCurrentCryptoNode()
+    postKeyChange()
     return
 
 #endregion

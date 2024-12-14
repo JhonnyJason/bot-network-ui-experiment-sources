@@ -5,7 +5,7 @@ import { createLogFunctions } from "thingy-debug"
 #endregion
 
 ############################################################
-import * as state from "./statemodule.js"
+import * as S from "./statemodule.js"
 import * as payloads from "./payloads.js"
 
 ############################################################
@@ -23,14 +23,14 @@ export initialize = ->
     log "initialize"
 
     # ## Client Setup
-    # secretKeyHex = state.load("secretKeyHex")
+    # secretKeyHex = S.load("secretKeyHex")
     # if !secretKeyHex?
     #     keyPairHex = await cryptoUtl.createKeyPairHex()
-    #     state.save("secretKeyHex", keyPairHex.secretKeyHex)
-    #     state.save("publicKeyHex", keyPairHex.publicKeyHex)
+    #     S.save("secretKeyHex", keyPairHex.secretKeyHex)
+    #     S.save("publicKeyHex", keyPairHex.publicKeyHex)
     #     secretKeyHex = keyPairHex.secretKeyHex
 
-    # publicKeyHex = state.load("publicKeyHex")
+    # publicKeyHex = S.load("publicKeyHex")
     # serverURL = "https://localhost:6969/thingy-post-rpc"
     # serverId = "a8d9607f6cc919af3df3850084f63c9536efea790b3f80f514717d2a3a0159e6"
     # # options = { serverURL, secretKeyHex }

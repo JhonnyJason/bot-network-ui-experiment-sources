@@ -99,7 +99,6 @@ alterStateOnLoad = (navState) ->
     triggers.reset()
     return true
 
-
 ############################################################
 loadWithNavState = (navState) ->
     log "loadWithNavState"
@@ -129,7 +128,7 @@ setUIState = (base, mod, ctx) ->
 
     ## If we are in RootState we might have a key so we have 2 overlapping initial states
     if base == "RootState" 
-        if account.hasKey() then base = "global-overview"
+        if account.hasKey() then base = "global-view"
         else base = "no-key"
 
     setAppState(base, mod, ctx)
