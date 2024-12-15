@@ -7,6 +7,7 @@ import { createLogFunctions } from "thingy-debug"
 ############################################################
 #region imported UI modules
 import * as content from "./contentmodule.js"
+import * as exchangeView from "./viewexchangemodule.js"
 import * as settings from "./settingsmodule.js"
 import * as accountSettings from "./accountsettingsmodule.js"
 import * as input from "./inputmodule.js"
@@ -36,26 +37,29 @@ applyBaseState["no-key"] = (ctx) ->
     # masterKey.focusFloatingSecretInput()
     return
 
+applyBaseState["locked-key"] = (ctx) ->
+    settings.switchSettingsOff()
+    content.setToLockedKeyState(ctx)
+    # masterKey.focusFloatingSecretInput()
+    return
+
 
 ############################################################
 # States on App Usage
 applyBaseState["global-view"] = (ctx) ->
     settings.switchSettingsOff()
     content.setToGlobalOverviewState(ctx)
-    # servers.display(ctx)
     return
-
 
 applyBaseState["add-exchange"] = (ctx) ->
     settings.switchSettingsOff()
     content.setToAddExchangeState(ctx)
-    # servers.display(ctx)
     return
 
-applyBaseState["strategy-overview"] = (ctx) ->
+applyBaseState["exchange-overview"] = (ctx) ->
     settings.switchSettingsOff()
-    content.setToStrategyOverviewState(ctx)
-    # servers.setEditData(ctx)
+    content.setToExchangeOverviewState(ctx)
+    exchangeView.setExchangeOverviewContext(ctx)
     return
 
 

@@ -11,7 +11,7 @@ import M from "mustache"
 import * as S from "./statemodule.js"
 import * as triggers from "./navtriggers.js"
 import * as account from "./accountmodule.js"
-import * as data from "./datamodule.js"
+import * as data from "./exchangedata.js"
 
 ############################################################
 #region DOM Cache
@@ -34,7 +34,7 @@ export initialize = ->
     log "initialize"
     addExchangeButton.addEventListener("click", addExchangeButtonClicked)
 
-    S.addOnChangeListener("account", updateData)
+    S.addOnChangeListener("exchangeData", updateData)
     updateData()
     return
 
@@ -44,23 +44,45 @@ addExchangeButtonClicked = ->
     triggers.addExchange()
     return
 
+#entry -> exchange-overview-button
+exchangeOverviewClicked = (evnt) ->
+    log "exchangeOverviewClicked"
+    entry = this.parentElement
+    index = entry.getAttribute("index")
+    triggers.controlExchange(index)
+    return
 
 ############################################################
 updateData = ->
     log "updateData"
-    await loadData()
+    await getCurrentData()
     updateDisplay()
     attachExchangeEventListeners()
     return
 
+############################################################
 updateDisplay  = ->
     log "updateDisplay"
+    updateTotalEvaluationDisplay()
+    updateAllExchangesDisplay()
+    return
+
+############################################################
+updateTotalEvaluationDisplay = ->
+    log "updateTotalEvaluationDisplay"
+    totalEvaluation = 0    
+    for exch in allExchanges when typeof exch.currentEvaluation == "number"
+        totalEvaluation += exch.currentEvaluation  
+
     totalEvaluationNumber.textContent = totalEvaluation
     totalEvaluationUnit.textContent = evaluationUnit
+    return
 
+updateAllExchangesDisplay = ->
+    log "updateAllExchangesDisplay"
     html = ""
+
     for exch, i in allExchanges
-        
         cObj = {}
         
         cObj.i = i
@@ -72,24 +94,15 @@ updateDisplay  = ->
 
         html += M.render(entryTemplate, cObj)
 
-
     allExchangesDisplay.innerHTML = html
     return
 
+############################################################
 attachExchangeEventListeners = ->
     log "attachExchangeEventListeners"
-    return
-
-loadData = ->
-    allExchanges = await data.getAllExchangesData()
-    
-    totalEvaluation = 0
-    totalEvaluation += exch.currentEvaluation for exch in allExchanges
-
+    buttons = globalviewFrame.getElementsByClassName("exchange-overview-button")
+    b.addEventListener("click", exchangeOverviewClicked) for b in buttons
     return
 
 ############################################################
-saveData = ->
-    log "saveData"
-    await data.saveAllExchangesData(allExchanges)
-    return
+getCurrentData = -> allExchanges = await data.getExchangeData()

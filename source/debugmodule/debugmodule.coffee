@@ -11,6 +11,7 @@ export modulesToDebug = {
     # authenticationinterface: true
     # configmodule: true
     # contentmodule: true
+    datamodule: true
     # globalviewmodule: true
     # keygeneration: true
     # keyimport: true

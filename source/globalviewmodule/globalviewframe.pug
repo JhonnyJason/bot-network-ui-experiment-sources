@@ -1,3 +1,5 @@
+include ../preloadermodule/preloader-mixins.pug
+
 .hidden-templates 
     #exchange-display-entry-template-container
         li.exchange-display-entry(index="{{{i}}}") 
@@ -7,7 +9,10 @@
             .exchange-display-evaluation 
                 .exchange-display-evaluation-number {{{currentEvaluation}}}
                 .exchange-display-evaluation-unit  {{{evaluationUnit}}}
-            .empty-cell
+            .exchange-access-indication
+                .access-preloader: +preloader("", "circles")
+                .exchange-access-success Connected 
+                .exchange-access-fail Not Connected
             .exchange-overview-button.click-button
                 svg: use(href="#svg-chevron-right-icon")
                 .label Control

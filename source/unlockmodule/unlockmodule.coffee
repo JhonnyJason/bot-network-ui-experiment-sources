@@ -10,6 +10,7 @@ import * as nav from "navhandler"
 ############################################################
 import * as qrReader from "./qrreadermodule.js"
 import * as account from "./accountmodule.js"
+import * as msgBox from "./messageboxmodule.js"
 
 ############################################################
 export initialize = ->
@@ -58,8 +59,10 @@ inputKeyUpped = ->
 unlockButtonClicked = ->
     log "unlockButtonClicked"
     data = phraseunlockInput.value
-    account.unlockKey(data)
-    nav.toMod("none")
+    try 
+        await account.unlockKey(data)
+        nav.toMod("none")
+    catch err then msgBox.error(err.message)
     return
 
 cancelUnlockButtonClicked = ->
@@ -80,8 +83,12 @@ export reset = ->
 export qrUnlock = ->
     log "qrUnlock"
     data = await qrReader.read()
-    if data then account.unlockKey(data)
-    nav.toMod("none")
+    if !data then return
+    
+    try
+        account.unlockKey(data)
+        nav.toMod("none")
+    catch err then msgBox(err.message)
     return
 
 export phraseUnlock = ->

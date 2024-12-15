@@ -56,16 +56,20 @@ export initialize = ->
 alterStateOnLoad = (navState) ->
     log "alterStateOnLoad"
     s = navState
-    
-    ki = account.getKeyInfo()
+    mod = s.modifier
 
+    ki = account.getKeyInfo()
     olog ki
 
     ## case: key exists and locked -> alter state
-    if ki.exists and ki.locked 
-        switch ki.protection 
-            when "qr" then triggers.unlockWithQR()
-            when "phrase" then triggers.unlockWithPhrase()
+    if ki.exists and ki.locked
+        switch ki.protection
+            when "qr"
+                if mod == "qrunlock" then return false 
+                triggers.unlockWithQR()
+            when "phrase" 
+                if mod == "phraseunlock" then return false
+                triggers.unlockWithPhrase()
             else throw new Error("Unhandeled protection value: #{ki.protection}")
         log "Key Existed and was Protected!"
         return true
@@ -127,9 +131,11 @@ setUIState = (base, mod, ctx) ->
     olog {base, mod, ctx}
 
     ## If we are in RootState we might have a key so we have 2 overlapping initial states
-    if base == "RootState" 
-        if account.hasKey() then base = "global-view"
-        else base = "no-key"
+    if base == "RootState"
+        if !account.hasKey() then base = "no-key"
+        else if account.isLocked() then base = "locked-key" 
+        else base = "global-view"
+    else if account.isLocked() and mod == "none" then base = "locked-key"
 
     setAppState(base, mod, ctx)
 
@@ -140,9 +146,10 @@ setUIState = (base, mod, ctx) ->
 
     switch mod
         when "deleteconfirmation" then deleteConfirmationProcess()
-        when "keygeneration" then keyGenerationProcess()
-        when "keyimport" then keyImportProcess()
-        when "keyexport" then keyExportProcess()
+        # turned into base states :-)
+        # when "keygeneration" then keyGenerationProcess()
+        # when "keyimport" then keyImportProcess()
+        # when "keyexport" then keyExportProcess()
 
     return
 

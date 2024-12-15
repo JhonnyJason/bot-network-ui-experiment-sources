@@ -10,6 +10,7 @@ element-foreground ?= #fff
     width 100%
     overflow hidden
     background-color element-background
+    color element-foreground
     display flex
     align-items: center
     transform translateY(-102%)
@@ -85,7 +86,13 @@ element-foreground ?= #fff
     opacity 1
     pointer-events: all
 
-    // .click-catcher
+
+@media screen and (max-width: 500px)
+    #phraseunlock-frame
+        .phraseunlock-container
+            .button-row
+                grid-template-columns: 1fr
+
     // .phraseunlock-container
     //     h2 Please provide your secret phrase:
     //     input#phraseunlock(type="password" name="secret-phrase")

@@ -17,8 +17,11 @@ import * as S from "./statemodule.js"
 export mainView = ->
     return nav.toRoot(true)
 
-export  addExchange = ->
+export addExchange = ->
     return nav.toBaseAt("add-exchange", null, 1)
+
+export controlExchange = (exchangeIndex) ->
+    return nav.toBaseAt("exchange-overview", {exchangeIndex}, 1)
 
 ############################################################
 export reset = ->
@@ -56,7 +59,6 @@ export keyExport = ->
 export unlockWithQR = ->
     return nav.toMod("qrunlock")
 
-
 export unlockWithPhrase = ->
     return nav.toMod("phraseunlock")
 
@@ -64,7 +66,6 @@ export unlockWithPhrase = ->
 ############################################################
 export settingsBackend = ->
     return nav.toBase("settings-backend")
-
 
 ############################################################
 export deleteKey =  ->

@@ -10,6 +10,11 @@ export setToTutorialState = ->
     content.className = "tutorial"
     return
 
+export setToLockedKeyState = ->
+    log "setToLockedKeyState"
+    content.className = "locked"
+    return
+
 export setToGlobalOverviewState = ->
     log "setToGlobalOverviewState"
     content.className = "global-view"

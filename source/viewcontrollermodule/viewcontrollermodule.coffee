@@ -1,7 +1,7 @@
 ############################################################
 #region debug
 import { createLogFunctions } from "thingy-debug"
-{log, olog} = createLogFunctions("controllermodule")
+{log, olog} = createLogFunctions("viewcontrollermodule")
 #endregion
 
 ############################################################

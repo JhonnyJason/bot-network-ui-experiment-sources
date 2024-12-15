@@ -1,0 +1,52 @@
+/*==========================================================
+Visible State
+==========================================================*/
+.add-controller
+    #addcontroller-frame
+        display block
+//=========================================================
+
+/*==========================================================
+Add Controller General Styles
+==========================================================*/
+#addcontroller-frame
+    display: none
+    color #000
+    padding 10px
+
+    h1
+        text-align: center
+        margin-bottom 20px
+
+    select#controller-select
+        border-radius: 3px
+        background-color: cd-antiflash 
+        color #fff
+        margin-bottom 30px
+
+    label
+        padding 5px 20px
+        display block
+    input
+        display block
+        margin-bottom 10px 
+
+    #addcontroller-conclusion-row
+        margin-top 50px
+        display grid
+        gap 20px
+        grid-template-columns: 1fr 1fr
+
+        .click-button
+            text-align: center
+//=========================================================
+
+/*==========================================================
+Smaller Screen Styles
+==========================================================*/
+@media screen and (max-width:500px)
+    #addcontroller-frame
+        #addcontroller-conclusion-row
+            grid-template-columns: 1fr
+
+ 

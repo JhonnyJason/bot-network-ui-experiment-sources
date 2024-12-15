@@ -185,9 +185,11 @@ useProtectedKey = (fullKeyHandle) ->
 #region exportedFunctions
 export getCryptoNode = -> currentCryptoNode
 export hasKey = -> currentKeyInfo.exists
+export isLocked = -> currentKeyInfo.locked
 export keyIsLocked = -> currentKeyInfo.locked
 export getKeyInfo = -> currentKeyInfo
 
+############################################################
 export deleteAccount = ->
     log "deleteAccount"
     S.remove("keyStoreObject")
@@ -198,12 +200,15 @@ export deleteAccount = ->
     postKeyChange()
     return
 
+############################################################
 export useNewKey = (fullKeyHandle) ->
     log "useNewKey"
     if fullKeyHandle.protection == "none" then useUnprotectedKey(fullKeyHandle)
     else useProtectedKey(fullKeyHandle)
+    storeKeyObject()
     return
 
+############################################################
 export unlockKey = (secretData) ->
     log "unlockKey"
     keySaltHex = currentKeyObj.keySaltHex

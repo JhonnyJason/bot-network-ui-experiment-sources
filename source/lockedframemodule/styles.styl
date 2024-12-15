@@ -1,0 +1,54 @@
+/*==========================================================
+Visibility
+==========================================================*/
+.locked
+    #lockedframe
+        display: block        
+
+
+/*==========================================================
+General Styles
+==========================================================*/
+
+#lockedframe
+    display: none
+    color #000
+    padding 30px
+
+    h1
+        margin-top 50px
+        margin-bottom 30px
+        text-align: center
+
+    #big-lock-symbol
+        height 150px
+        width 150px
+        margin auto
+        svg
+            height inherit
+            width inherit
+
+    #locked-options-row
+        display grid
+        grid-template-columns: 1fr 1fr
+        gap 20px
+
+        .click-button   
+            display flex
+            justify-content: center
+            svg
+                width 23px
+                height 23px
+                margin-right 5px
+            .label
+                line-height 23px
+
+
+        #locked-delete-button
+            background-color cd-danger-red
+
+
+@media screen and (max-width:500px)
+    #lockedframe
+        #locked-options-row
+            grid-template-columns: 1fr

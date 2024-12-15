@@ -1,5 +1,6 @@
 simpleVolatilityTrader = {
-    name: "Simple Volatility Trader"
+    type: "volatility0"
+    name: "Simple Volatility Trader v0.1"
     assetSlots: 2
     defaultParams: {
         baseDistancePercent: 0.6
@@ -13,17 +14,27 @@ simpleVolatilityTrader = {
     }
 }
 
-
 simpleBalanceTrader = {
-    name: "Simple Balance Trader"
+    type: "balance0"
+    name: "Simple Balance Trader v0.1"
     assetSlots: 2
     defaultParams: {
         inbalanceTolerancePercent: 5
     }
 }
 
+freakyRandomTrader = {
+    type: "random0"
+    name: "Freaky Random Trader v0.1"
+    assetSlots: 2
+    defaultParams: {
+        crazyness: 5
+    }
+}
+
 
 export afControllers = [
     simpleVolatilityTrader,
-    simpleBalanceTrader
+    simpleBalanceTrader,
+    freakyRandomTrader
 ]
