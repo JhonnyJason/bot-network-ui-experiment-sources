@@ -2,18 +2,18 @@ include ../preloadermodule/preloader-mixins.pug
 
 .hidden-templates 
     #exchange-display-entry-template-container
-        li.exchange-display-entry(index="{{{i}}}") 
-            .exchange-display-brand 
+        li.exchange-display-entry.entry-box(index="{{{i}}}") 
+            .exchange-display-brand.icon-n-label-big 
                 svg: use(href="{{{iconHref}}}")
                 .label {{{name}}} 
-            .exchange-display-evaluation 
+            .exchange-display-evaluation
                 .exchange-display-evaluation-number {{{currentEvaluation}}}
                 .exchange-display-evaluation-unit  {{{evaluationUnit}}}
             .exchange-access-indication
                 .access-preloader: +preloader("", "circles")
                 .exchange-access-success Connected 
                 .exchange-access-fail Not Connected
-            .exchange-overview-button.click-button
+            .exchange-overview-button.click-button.flashy-button.icon-n-label
                 svg: use(href="#svg-chevron-right-icon")
                 .label Control
 
@@ -53,6 +53,6 @@ include ../preloadermodule/preloader-mixins.pug
                 svg: use(href="#svg-chevron-right-icon")
                 .label Control
 
-    #add-exchange-button.click-button.flashy-button
+    #add-exchange-button.click-button.flashy-button.icon-n-label
          svg: use(href="#svg-add-icon")
          .label Add Exchange

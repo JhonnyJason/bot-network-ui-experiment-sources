@@ -17,44 +17,39 @@ Main Content Styles
 #content
     position absolute
     top 0
-    left 0
+    left 50%
     width 100%
+    max-width max-content-width
     height 100%
     padding 20px 0
     box-sizing: border-box
+    transform: translateX(-50%)
     transition: opacity 0.3s
     overflow: hidden
     overflow-y: auto
 
-#content
-    text-align left
 
-    .click-button
-        padding 7px 10px
-        // display block
-        min-width 180px
-        background-color cd-flash
-        color white
-        font-weight bold
-        border-radius: 3px
-    input
-        display block
-        color black
-        margin-left auto
-        margin-right auto
-        box-sizing: border-box
-        overflow: hidden
-        text-overflow: ellipsis
-        border solid 1px #808080
-        width calc(100% - 30px)
+// #content
+//     text-align left
 
+//     .click-button
+//     input
+//         display block
+//         color black
+//         margin-left auto
+//         margin-right auto
+//         box-sizing: border-box
+//         overflow: hidden
+//         text-overflow: ellipsis
+//         border solid 1px #808080
+//         width calc(100% - 30px)
 
 
 /*==========================================================
 Apppreloader
 ==========================================================*/
 #apppreloader
-    width: 200px
+    width: 120px
     max-width: 30%
     position: absolute
     top 50%

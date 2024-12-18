@@ -1,16 +1,16 @@
 #addexchange-frame 
 
     h1 Choose your Exchange to Add
-    select#exchange-select
+    select#exchange-select.dark-select
         //- option(value="kraken") Kraken
         //- option(value="binance") Binance  
 
     label(for="apikey-input") API (Access) Key
-    input#apikey-input(type="password" name="apikey")
+    input#apikey-input.dark-input(type="password" name="apikey")
     label(for="secretkey-input") API Private/Secret Key
-    input#secretkey-input(type="password" name="apisecretkey")
+    input#secretkey-input.dark-input(type="password" name="apisecretkey")
 
-    #addexchange-conclusion-row 
+    #addexchange-conclusion-row.button-box
         #addexchange-use-button.click-button.flashy-button.disabled
             .label Use
         #addexchange-cancel-button.click-button.flashy-button 

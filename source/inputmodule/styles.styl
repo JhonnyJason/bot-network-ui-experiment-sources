@@ -25,72 +25,35 @@ element-foreground ?= #fff
         width 100%
         overflow hidden
 
-        #phraseinput-close-button
-            position: fixed
-            top 0
-            right 0
-            width 60px
-            height 60px
-            padding 15px
-            box-sizing: border-box
-            color #000
-            svg
-                width: 30px
-                height 30px
+    #phraseinput-close-button
+        position: fixed
+        top 0
+        right 0
+        width 60px
+        height 60px
+        padding 15px
+        box-sizing: border-box
+        color #000
+        svg
+            width: 30px
+            height 30px
 
     .phraseinput-container
         position absolute
         top 0
-        left 0
+        left 50%
         margin-top 100px
         width 100%
+        max-width: max-content-width
         padding 10px
         box-sizing: border-box
-        
+        transform: translateX(-50%)
+
         input
-            background-color #024
-            color #fff
-            text-align: center
-            padding 16px 7px
             margin-top 16px
             margin-bottom 30px
-            border-radius: 3px
-
-
-        .button-row
-            display grid
-            gap 20px
-            grid-template-columns: 1fr 1fr
-
-        .flashy-button
-            background-color cd-flash
-            color #fff
-            font-weight bold
-            min-width 150px
-            padding 10px
-            border-radius: 3px
-            display flex
-            align-content: center
-            justify-content: center
-            svg
-                height 15px
-                width 15px
-
-        .flashy-button.disabled
-            opacity 0.2
-            pointer-events: none
-
+        
 #phraseinput-frame.active
     transform translateY(0)
     opacity 1
     pointer-events: all
-
-    // .click-catcher
-    // .phraseinput-container
-    //     h2 Please provide your secret phrase:
-    //     input#phraseinput(type="password" name="secret-phrase")
-    //     .button-row 
-    //         #accept-phrase-button.click-button.flashy-button Okay 
-    //         #cancel-phrase-button.click-button.flashy-button Cancel 
-
-
