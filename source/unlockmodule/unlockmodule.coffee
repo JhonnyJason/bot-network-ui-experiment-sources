@@ -52,7 +52,7 @@ inputKeyDowned = (evnt) ->
 
 inputKeyUpped = ->
     log "inputKeyUpped"
-    if phraseunlockInput.value.length == 0 then phraseunlockInput.classList.add("disabled")
+    if phraseunlockInput.value.length == 0 then unlockButton.classList.add("disabled")
     else unlockButton.classList.remove("disabled")
     return
 
