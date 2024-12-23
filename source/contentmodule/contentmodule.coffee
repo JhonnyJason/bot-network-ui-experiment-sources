@@ -30,6 +30,11 @@ export setToExchangeOverviewState = (ctx) ->
     content.className = "exchange-overview"
     return
 
+export setToAddControllerState = ->
+    log "setToAddControllerState"
+    content.className = "add-controller"
+    return
+
 export setToControllerOverviewState = (ctx) ->
     log "setToControllerOverviewState"
     content.className = "controller-overview"

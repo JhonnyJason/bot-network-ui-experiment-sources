@@ -3,7 +3,8 @@ import { addModulesToDebug } from "thingy-debug"
 ############################################################
 export modulesToDebug = {
 
-    exchangemodule: true
+    # exchangemodule: true
+    exchangedata: true
     # accountmodule: true
     # appcoremodule: true
     # accountsettingsmodule: true
@@ -11,7 +12,7 @@ export modulesToDebug = {
     # authenticationinterface: true
     # configmodule: true
     # contentmodule: true
-    datamodule: true
+    # datamodule: true
     # globalviewmodule: true
     # keygeneration: true
     # keyimport: true
@@ -30,6 +31,7 @@ export modulesToDebug = {
     # websocketmodule: true
     # unlockmodule: true
     # utilsmodule: true
+    viewexchangemodule:  true
 }
 
 addModulesToDebug(modulesToDebug)

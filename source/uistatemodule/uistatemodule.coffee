@@ -62,6 +62,10 @@ applyBaseState["exchange-overview"] = (ctx) ->
     exchangeView.setExchangeOverviewContext(ctx)
     return
 
+applyBaseState["add-controller"] = (ctx) ->
+    settings.switchSettingsOff()
+    content.setToAddControllerState(ctx)
+    return
 
 ############################################################
 # States on Settings

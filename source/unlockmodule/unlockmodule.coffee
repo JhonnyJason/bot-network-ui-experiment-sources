@@ -27,7 +27,6 @@ export initialize = ->
     phraseunlockInput.addEventListener("keydown", inputKeyDowned)
     return
 
-
 ############################################################
 #region internalFunctions
 turnDown = ->

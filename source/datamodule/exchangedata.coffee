@@ -17,6 +17,8 @@ exchangeStore = []
 ############################################################
 dataSynced = false
 isSyncing = false
+dataHasSynced = null
+syncResolve = null
 
 ############################################################
 typeToBaseExchangeObj = {}
@@ -50,12 +52,15 @@ saveAllExchangesData = ->
 #region exposedFunctions
 export syncExchangeData = ->
     log "syncExchangeData"
-    return if isSyncing
 
+    return await dataHasSynced if isSyncing
+
+    dataHasSynced = new Promise((resolve) -> syncResolve = resolve)
+    isSyncing = true
+
+    dataSynced = false
     exchangeStore = []
     allExchangeData = []
-    dataSynced = false
-    isSyncing = true
 
     try
         storedData = await data.loadEncryptedData("encryptedExchangeData")
@@ -68,6 +73,7 @@ export syncExchangeData = ->
 
     isSyncing = false
     dataSynced = true
+    syncResolve()
     S.callOutChange("exchangeData")
     return
 

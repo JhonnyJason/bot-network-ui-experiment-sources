@@ -23,6 +23,9 @@ export addExchange = ->
 export controlExchange = (exchangeIndex) ->
     return nav.toBaseAt("exchange-overview", {exchangeIndex}, 1)
 
+export addController = ->
+    return nav.toBaseAt("add-controller", null, 2)
+
 ############################################################
 export reset = ->
     return nav.toRoot(true)

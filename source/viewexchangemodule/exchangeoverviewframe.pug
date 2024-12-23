@@ -1,5 +1,16 @@
-#exchangeoverview-frame 
+.hidden-templates
+    #controller-display-entry-template-container 
+        li.controller-display-entry.entry-box
+            .controller-display-label {{{name}}}
+            .controller-display-state {{{currentState}}}
+            // additional summary fields:
+            // profit?...
+            .controller-overview-button.click-button.flashy-button.icon-n-label
+                svg: use(href="#svg-chevron-right-icon")
+                .label Manage
 
+
+#exchangeoverview-frame 
     #exchange-display 
         svg#exchange-icon-display: use(href="")
         #exchange-name-display.label
@@ -8,24 +19,13 @@
         #exchange-evaluation-number 
         #exchange-evaluation-unit 
 
+    #exchange-evaluation-history-display 
+        #exchange-evaluation-history 
+
     #exchange-distribution-display
-        #exchange-distribution-pie
-        ul#exchange-distribution-assets
+        #exchange-distribution
 
     ul#controller-display
-        li.controller-display-entry.entry-box
-            .controller-display-label Master Controller 1
-            .controller-display-state Level 2
-            .controller-display-profit Profit: + 3.4€ | + 0.002ETH
-            .controller-overview-button.click-button.flashy-button.icon-n-label
-                svg: use(href="#svg-chevron-right-icon")
-                .label Manage
-        li.controller-display-entry.entry-box
-            .controller-display-label Master Controller 2
-            .controller-display-state Level 5
-            .controller-overview-button.click-button.flashy-button.icon-n-label
-                svg: use(href="#svg-chevron-right-icon")
-                .label Manage
 
     #add-controller-button.click-button.flashy-button.icon-n-label
          svg: use(href="#svg-add-icon")
