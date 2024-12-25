@@ -1,6 +1,15 @@
-input#backend-server-input(type="text")
-#backend-server-works-indicator Server is ready
-#backend-server-button-container
-    #backend-server-ok-button.click-button Okay
-    #backend-server-reset-button.click-button Reset
+#backend-input-container
+    h2 Server URL
+    input#backend-server-input(type="text")
+    #backend-connection-works-indicator Server is ready
+    #backend-connection-fails-indicator Connecion Error!
+#backend-checking-container 
+    h2 Server Id
+    #backend-stated-server-id 
+    //- input#backend-expected-server-id-input(type="text" placeholder="Enter Expected Id here...") 
+    //- #backend-id-matches-indicator Server Id matches the expected value :-)
+    //- #backend-id-differs-indicator Unexpected Server Id!
+#backend-conclusion-row.button-box
+    #backend-server-save-button.click-button.flashy-button Save
+    #backend-server-reset-button.click-button.flashy-button Reset
 p#backend-server-explaination-text This is the Server used that both ends would know eachother - it must be compatible with our API.<br><br><link-to-API-doc>

@@ -4,12 +4,13 @@ import { addModulesToDebug } from "thingy-debug"
 export modulesToDebug = {
 
     # exchangemodule: true
-    exchangedata: true
+    # exchangedata: true
     # accountmodule: true
     # appcoremodule: true
     # accountsettingsmodule: true
     # authclientmodule: true
     # authenticationinterface: true
+    backendsettingsmodule: true
     # configmodule: true
     # contentmodule: true
     # datamodule: true
@@ -31,7 +32,7 @@ export modulesToDebug = {
     # websocketmodule: true
     # unlockmodule: true
     # utilsmodule: true
-    viewexchangemodule:  true
+    # viewexchangemodule:  true
 }
 
 addModulesToDebug(modulesToDebug)

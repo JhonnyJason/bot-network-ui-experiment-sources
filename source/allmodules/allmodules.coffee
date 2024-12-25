@@ -4,6 +4,7 @@ import * as addcontrollermodule from "./addcontrollermodule.js"
 import * as addexchangemodule from "./addexchangemodule.js"
 import * as aliasmodule from "./aliasmodule.js"
 import * as appcoremodule from "./appcoremodule.js"
+import * as backendmodule from "./backendmodule.js"
 import * as backendsettingsmodule from "./backendsettingsmodule.js"
 import * as configmodule from "./configmodule.js"
 import * as contentmodule from "./contentmodule.js"
@@ -37,6 +38,7 @@ Modules = {
     addexchangemodule,
     aliasmodule,
     appcoremodule,
+    backendmodule,
     backendsettingsmodule,
     configmodule,
     contentmodule,
